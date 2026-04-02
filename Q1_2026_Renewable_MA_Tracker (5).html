@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q1 2026 — Renewable Energy & Sustainable Infrastructure M&A Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:      #1B3A5C;
+  --navy-l:    #24527F;
+  --navy-pale: #EEF3F8;
+  --navy-mid:  #C8D8E8;
+  --accent:    #2E7D99;
+  --gold:      #9A6010;
+  --red:       #8B2A2A;
+  --green:     #2E7A4F;
+  --purple:    #5A3A7A;
+  --teal:      #2A6A6A;
+  --steel:     #3D5F7A;
+  --orange:    #A04A10;
+  --bg:        #FFFFFF;
+  --surface:   #F7F9FC;
+  --border:    #DDE4EC;
+  --text:      #1A2332;
+  --muted:     #5E7491;
+  --row-hover: #EAF1F8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;padding:2.5rem 2rem 5rem}
+
+/* PAGE HEADER */
+.page-header{max-width:1700px;margin:0 auto 1.5rem;padding-bottom:1rem;border-bottom:3px solid var(--navy)}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+h1{font-size:1.2rem;font-weight:700;color:var(--navy);line-height:1.25}
+h1 em{font-style:normal;color:var(--accent)}
+.meta-row{display:flex;gap:2rem;margin-top:.5rem;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.meta-row span strong{color:var(--text);font-weight:600}
+
+/* KPI BAR */
+.kpi-bar{max-width:1700px;margin:0 auto 1.5rem;display:flex;gap:.7rem;flex-wrap:wrap}
+.kpi{flex:1 1 130px;background:var(--navy);border-radius:6px;padding:.75rem 1rem;color:#fff}
+.kpi-num{font-size:1.45rem;font-weight:700;display:block;line-height:1;margin-bottom:.18rem}
+.kpi-num.gold{color:#F0B450}.kpi-num.teal{color:#7ECFEA}.kpi-num.green{color:#7CE8A8}
+.kpi-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:#A8C4D8}
+
+/* LEGEND */
+.legend{max-width:1700px;margin:0 auto 1rem;display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap;font-size:10.5px;color:var(--muted);padding:.6rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:6px}
+.legend strong{color:var(--navy);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:.3rem}
+.leg-item{display:flex;align-items:center;gap:.3rem}
+
+/* CONTROLS */
+.controls{max-width:1700px;margin:0 auto .9rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.ctrl-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .75rem;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--navy);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none;font-family:inherit}
+.ctrl-btn:hover{background:var(--navy-pale);border-color:var(--navy-mid)}
+.ctrl-hint{font-size:11px;color:var(--muted)}
+
+/* SECTION BLOCK */
+.section-block{max-width:1700px;margin:0 auto .85rem}
+.sec-header{display:flex;align-items:center;gap:.55rem;padding:.6rem 1rem;background:var(--navy);border-radius:6px 6px 0 0;cursor:pointer;user-select:none}
+.sec-header.collapsed{border-radius:6px}
+.sec-icon{font-size:.85rem;line-height:1}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#C8DCF0;flex:1}
+.sec-count{font-size:10px;color:#7EAED4;white-space:nowrap}
+.chevron{margin-left:.4rem;color:#7EAED4;transition:transform .25s;font-size:11px}
+.sec-header.collapsed .chevron{transform:rotate(-90deg)}
+
+/* SECTION BODY */
+.sec-body{overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .2s;max-height:6000px;opacity:1}
+.sec-body.collapsed{max-height:0;opacity:0;pointer-events:none}
+
+/* TABLE */
+.table-wrap{border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;overflow-x:auto;box-shadow:0 2px 8px rgba(27,58,92,.05)}
+table{width:100%;border-collapse:collapse;min-width:1150px;table-layout:fixed}
+col.c-date  {width:75px}
+col.c-seller{width:175px}
+col.c-buyer {width:175px}
+col.c-val   {width:95px}
+col.c-cap   {width:80px}
+col.c-type  {width:155px}
+col.c-cmt   {width:auto}
+
+thead tr{background:var(--navy-pale);border-bottom:2px solid var(--navy-mid)}
+th{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--navy);padding:.6rem .8rem;text-align:left;white-space:nowrap}
+
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:nth-child(even):not(.wind-exit){background:var(--surface)}
+tbody tr:hover:not(.wind-exit){background:var(--row-hover)}
+
+td{padding:.7rem .8rem;vertical-align:top;font-size:11.5px;line-height:1.5;overflow:hidden}
+td.date-cell{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--navy);font-weight:500;white-space:nowrap}
+td.val-cell{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--gold)}
+td.cap-cell{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--teal);font-weight:500}
+td.cmt-cell{color:var(--text)}
+
+/* PARTY CELL */
+.party-cell{display:flex;flex-direction:column;gap:.35rem}
+.p-label{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.party-row{display:flex;align-items:center;gap:.5rem}
+.logo-box{width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.logo-box img{width:24px;height:24px;object-fit:contain;display:block}
+.logo-init{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:-.3px}
+.party-name{font-weight:600;font-size:11.5px;color:var(--navy);line-height:1.25}
+.party-name.buyer{color:var(--accent)}
+.party-name.exit-party{color:var(--red)}
+.party-sub{font-size:10px;color:var(--muted);line-height:1.4;margin-top:.08rem}
+
+/* DEAL TYPE TAGS */
+.tags{display:flex;flex-direction:column;gap:.3rem}
+.tag-row{display:flex;flex-wrap:wrap;gap:.25rem}
+.tag{display:inline-block;border-radius:3px;padding:.14rem .38rem;font-size:8.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;white-space:nowrap}
+/* Deal structure tags */
+.tag.take  {background:var(--navy)}
+.tag.corp  {background:var(--navy-l)}
+.tag.asset {background:var(--accent)}
+.tag.bkrp  {background:var(--red)}
+.tag.spac  {background:var(--green)}
+.tag.exit  {background:#7A3020}
+.tag.mfg   {background:var(--steel)}
+.tag.vert  {background:var(--teal)}
+.tag.div   {background:var(--purple)}
+.tag.part  {background:#4A7A4A}
+.tag.lic   {background:#6A5A2A}
+.tag.jv    {background:#3A5A7A}
+.tag.dev   {background:#5A3A5A}
+/* Scale tags */
+.tag.gc  {background:#1B5C3A;border:none}
+.tag.btm {background:#6B3A1A;border:none}
+/* Source tag */
+.tag.wf  {background:#7A6A3A}
+
+/* SOURCE LINKS */
+.sources{margin-top:.4rem;display:flex;flex-wrap:wrap;gap:.2rem .45rem;align-items:center;font-size:9.5px;color:var(--muted)}
+.src{font-size:9.5px;color:var(--accent);text-decoration:none;font-weight:500;border-bottom:1px dotted var(--accent)}
+.src:hover{border-bottom-style:solid}
+.src::before{content:"↗ ";opacity:.7;font-size:8px}
+
+/* WIND EXIT */
+tr.wind-exit td{background:#FFF5F3}
+tr.wind-exit:hover td{background:#FFE9E4}
+
+/* MARKET CONTEXT */
+.context{max-width:1700px;margin:1.4rem auto 0;border:1px solid var(--border);border-left:4px solid var(--navy);border-radius:6px;padding:1rem 1.3rem;background:var(--surface)}
+.context h3{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);margin-bottom:.75rem}
+.ctx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:.65rem}
+.ctx-item{background:#fff;border:1px solid var(--border);border-radius:5px;padding:.65rem .85rem;font-size:11px;line-height:1.55}
+.ctx-item strong{color:var(--navy);font-weight:600;display:block;margin-bottom:.18rem}
+
+/* FOOTER */
+footer{max-width:1700px;margin:1.3rem auto 0;font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:.75rem;line-height:1.65}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <p class="eyebrow">Infrastructure Fund Research &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; Confidential</p>
+  <h1>Q1 2026 &nbsp;<em>Renewable Energy &amp; Sustainable Infrastructure</em>&nbsp; M&amp;A Activity Tracker — United States</h1>
+  <div class="meta-row">
+    <span>Coverage: <strong>January 1 – March 30, 2026</strong></span>
+    <span>Compiled: <strong>March 30, 2026</strong></span>
+    <span>Primary Sources: <strong>Wells Fargo March 2026 Report · Utility Dive · PV Magazine · ESG Today · PrivSource · PwC · FTI Consulting</strong></span>
+  </div>
+</header>
+
+<!-- KPI BAR -->
+<div class="kpi-bar">
+  <div class="kpi"><span class="kpi-num gold">17</span><span class="kpi-label">Total Deals / Events</span></div>
+  <div class="kpi"><span class="kpi-num teal">~$45B+</span><span class="kpi-label">Total Value (Disclosed)</span></div>
+  <div class="kpi"><span class="kpi-num gold">4</span><span class="kpi-label">Mega-Deals ($1B+)</span></div>
+  <div class="kpi"><span class="kpi-num green">4</span><span class="kpi-label">Hyperscaler / Tech-Driven</span></div>
+  <div class="kpi"><span class="kpi-num" style="color:#7CE8A8">13+</span><span class="kpi-label">GW Capacity Involved</span></div>
+  <div class="kpi"><span class="kpi-num" style="color:#fff">1</span><span class="kpi-label">Notable Exit (Offshore Wind)</span></div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <strong>Tag Legend:</strong>
+  <span class="leg-item"><span class="tag gc">GC</span>&nbsp;Grid-Connected / Utility-Scale</span>
+  <span class="leg-item"><span class="tag btm">BTM</span>&nbsp;Behind-the-Meter / Distributed / Community Solar</span>
+  <span class="leg-item"><span class="tag wf">WF</span>&nbsp;Wells Fargo March 2026 Report</span>
+  <span style="color:var(--border)">|</span>
+  <span class="leg-item"><span class="tag take">Take-Private</span></span>
+  <span class="leg-item"><span class="tag asset">Asset Acq.</span></span>
+  <span class="leg-item"><span class="tag part">Partnership</span></span>
+  <span class="leg-item"><span class="tag jv">JV / Offtake</span></span>
+  <span class="leg-item"><span class="tag dev">Project Dev.</span></span>
+  <span class="leg-item"><span class="tag lic">Licensing</span></span>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <button class="ctrl-btn" onclick="expandAll()">▾ &nbsp;Expand All</button>
+  <button class="ctrl-btn" onclick="collapseAll()">▸ &nbsp;Collapse All</button>
+  <span class="ctrl-hint">· Click any section header to toggle</span>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+  SECTION 1 — ASSET / PROJECT ACQUISITIONS  (lead section)
+═══════════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="sec-header" id="hdr-asset" onclick="toggle('asset')">
+    <span class="sec-icon">🏗️</span>
+    <span class="sec-title">Asset / Project-Level Acquisitions</span>
+    <span class="sec-count">4 deals</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="sec-body" id="body-asset">
+  <div class="table-wrap"><table>
+    <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+    <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+    <tbody>
+
+    <!-- Enel / Excelsior -->
+    <tr>
+      <td class="date-cell">02/21/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Seller</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Excelsior_Energy_logo.png/200px-Excelsior_Energy_logo.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#3D6B3A\'>EEC</div>'" alt="Excelsior Energy Capital"></div>
+            <span class="party-name">Excelsior Energy Capital</span>
+          </div>
+          <p class="party-sub">U.S. wind + solar portfolio, 830 MW</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Enel_logo.svg/200px-Enel_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#6B0000\'>ENEL</div>'" alt="Enel"></div>
+            <span class="party-name buyer">Enel</span>
+          </div>
+          <p class="party-sub">Italian multinational energy company, large US renewables platform</p>
+        </div>
+      </td>
+      <td class="val-cell">$1,000</td>
+      <td class="cap-cell">830 MW</td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag asset">Asset Acquisition</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Enel acquired a U.S. wind and solar portfolio from Excelsior Energy Capital for $1B, adding 830 MW of operating wind and solar plants. Consistent with Enel's continued build-out of its US renewables platform. At ~$1.2M/MW, deal reflects fair market pricing for operating utility-scale wind/solar in the current environment. Bolsters Enel North America's position in the US merchant and contracted power market.
+        <div class="sources">Wells Fargo Q1'26 Report</div>
+      </td>
+    </tr>
+
+    <!-- Brookfield TerraForm / Hexagon Energy -->
+    <tr>
+      <td class="date-cell">02/02/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Seller</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/hexagonenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#3A5A3A\'>HEX</div>'" alt="Hexagon Energy"></div>
+            <span class="party-name">Hexagon Energy</span>
+          </div>
+          <p class="party-sub">Steward Creek Solar project, ~1.6 GW, Illinois</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Brookfield_Asset_Management_logo.svg/200px-Brookfield_Asset_Management_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#1A4A7A\'>BAM</div>'" alt="Brookfield TerraForm"></div>
+            <span class="party-name buyer">Brookfield TerraForm</span>
+          </div>
+          <p class="party-sub">Brookfield's renewable power &amp; transition infrastructure platform</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">~1,600 MW</td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag asset">Asset Acquisition</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Brookfield TerraForm acquired the Steward Creek Solar project (~1.6 GW) in Illinois from Hexagon Energy. One of the largest single solar project acquisitions of Q1 2026 by capacity. Illinois is an active renewable market driven by the Climate and Equitable Jobs Act (CEJA). Steward Creek would rank among the largest solar projects in MISO if fully developed. Aligns with Brookfield's strategy of acquiring large-scale development-stage or construction-ready assets across key North American markets.
+        <div class="sources">Wells Fargo Q1'26 Report</div>
+      </td>
+    </tr>
+
+    <!-- Amazon / Sunstone Solar -->
+    <tr>
+      <td class="date-cell">Jan '26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Seller (Bankrupt)</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#8B2A2A">SS</div>
+            <span class="party-name">Sunstone Solar</span>
+          </div>
+          <p class="party-sub">1,200 MW solar + up to 7,200 MWh BESS site, Morrow County, OR — Oregon's largest proposed solar project</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/200px-Amazon_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#FF9900;color:#000\'>AMZ</div>'" alt="Amazon"></div>
+            <span class="party-name buyer">Amazon / AWS</span>
+          </div>
+          <p class="party-sub">Outbid Puget Sound Energy ($82M) at bankruptcy auction</p>
+        </div>
+      </td>
+      <td class="val-cell">$83</td>
+      <td class="cap-cell">1,200 MW<br><small style="font-size:9px;color:var(--muted)">+7,200 MWh BESS</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag bkrp">Bankruptcy Acq.</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Amazon won competitive bankruptcy auction for Oregon's largest proposed solar-plus-storage development site, outbidding regional utilities — a clear signal hyperscalers now compete directly against utilities for greenfield renewable sites. Project targeted to power AWS data centers in eastern Oregon. Subject to Oregon state regulatory approvals. OBBBA tax credit deadlines (funding 30–50% of project cost) create tight execution urgency.
+        <div class="sources"><a class="src" href="https://www.opb.org/article/2026/03/11/oregon-amazon-solar-energy-storage-project/" target="_blank">OPB</a></div>
+      </td>
+    </tr>
+
+    <!-- Standard Solar / AC Power -->
+    <tr>
+      <td class="date-cell">03/04/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Seller</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#2E7D99">AC</div>
+            <span class="party-name">AC Power</span>
+          </div>
+          <p class="party-sub">Six-project, 28.8 MW community solar portfolio; NJ &amp; IL; sited on closed landfills &amp; brownfields</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#1B6B3A">SSI</div>
+            <span class="party-name buyer">Standard Solar, Inc.</span>
+          </div>
+          <p class="party-sub">Maryland-based solar developer / owner-operator</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">28.8 MW</td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag asset">Asset Sale</span></div>
+          <div class="tag-row"><span class="tag btm">BTM</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Standard Solar acquired a six-project, 28.8 MW community solar portfolio in New Jersey and Illinois. All projects sit on closed landfills and brownfields — favorable land-use profiles with lower permitting risk and strong ESG attributes. Classified BTM/distributed: community solar subscribers receive bill credits, not grid wholesale power. Reflects continued appetite for operating community solar in PJM/MISO markets.
+        <div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/standard-solar-acquires-28-8-mw-community-solar-portfolio-from-ac-power-B6Sv9B" target="_blank">PrivSource</a></div>
+      </td>
+    </tr>
+
+    </tbody>
+  </table></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+  SECTION 2 — MEGA-DEALS / CORPORATE M&A
+═══════════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="sec-header" id="hdr-mega" onclick="toggle('mega')">
+    <span class="sec-icon">⭐</span>
+    <span class="sec-title">Mega-Deals — Corporate M&amp;A</span>
+    <span class="sec-count">2 deals · ~$38B+ total</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="sec-body" id="body-mega">
+  <div class="table-wrap"><table>
+    <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+    <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+    <tbody>
+
+    <!-- AES / GIP EQT -->
+    <tr>
+      <td class="date-cell">03/02/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Target</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/AES_Corporation_logo.svg/200px-AES_Corporation_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#003087\'>AES</div>'" alt="AES"></div>
+            <span class="party-name">AES Corporation</span>
+          </div>
+          <p class="party-sub">Global power co.; 11.8 GW signed clean energy supply agreements; large US renewables &amp; regulated utility franchise</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer Consortium</span>
+          <div class="party-row" style="margin-bottom:.35rem">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/BlackRock_wordmark.svg/200px-BlackRock_wordmark.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#231F20\'>BLK</div>'" alt="BlackRock GIP"></div>
+            <span class="party-name buyer" style="font-size:10.5px">GIP (BlackRock)</span>
+          </div>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/EQT_AB_logo.svg/200px-EQT_AB_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#E4003A\'>EQT</div>'" alt="EQT"></div>
+            <span class="party-name buyer" style="font-size:10.5px">EQT Infrastructure VI</span>
+          </div>
+          <p class="party-sub">+ CalPERS &amp; Qatar Investment Authority (co-investors)</p>
+        </div>
+      </td>
+      <td class="val-cell">$10,700 eq.<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">$33,400 TEV</small></td>
+      <td class="cap-cell">Multi-GW<br><small style="font-size:9px;color:var(--muted)">Global fleet</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag take">Take-Private</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Largest clean energy infrastructure take-private of the current cycle. GIP/EQT consortium acquires AES — the world's largest corporate clean energy supplier (11.8 GW contracted to major tech firms) — at $15/share cash, a 40.3% premium to 30-day VWAP. Deal rationale: AES needed substantial capital to fund US renewables and data center power demand but could not do so without dividend cuts or dilutive equity issuance. CalPERS and QIA co-underwrite. Close pending shareholder vote and multi-jurisdiction regulatory approvals (late '26 / early '27).
+        <div class="sources">
+          Wells Fargo Q1'26 Report
+          <a class="src" href="https://www.esgtoday.com/blackrock-eqt-lead-33-billion-acquisition-of-aes/" target="_blank">ESG Today</a>
+          <a class="src" href="https://www.bloomberg.com/news/articles/2026-03-02/blackrock-s-gip-and-eqt-to-buy-aes-for-10-7-billion" target="_blank">Bloomberg</a>
+        </div>
+      </td>
+    </tr>
+
+    <!-- Google / Intersect -->
+    <tr>
+      <td class="date-cell">Closed<br>03/12/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Target (TPG's stake)</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/intersectpower.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#1A4F7A\'>IP</div>'" alt="Intersect Power"></div>
+            <span class="party-name">Intersect Power</span>
+          </div>
+          <p class="party-sub">2.2 GW solar + 2.4 GWh BESS; $15B AUM in operation or construction; co-located data center energy parks, TX &amp; CA</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/200px-Google_2015_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#4285F4\'>G</div>'" alt="Google"></div>
+            <span class="party-name buyer">Google / Alphabet</span>
+          </div>
+          <p class="party-sub">Existing minority holder (prior $800M investment in Intersect)</p>
+        </div>
+      </td>
+      <td class="val-cell">$4,750<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">+ debt assumption</small></td>
+      <td class="cap-cell">2,200 MW<br><small style="font-size:9px;color:var(--muted)">+2,400 MWh BESS</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag corp">Corp. Acquisition</span></div>
+          <div class="tag-row"><span class="tag btm">BTM</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Landmark deal — first Big Tech outright acquisition of a major renewable energy developer; marks a structural pivot from virtual PPAs to vertical integration of generation assets. Google acquires Intersect to co-locate solar/BESS with AI data centers (BTM/behind-the-meter for data center load), bypassing interconnection queues stretching 7–12 years in some regions. Intersect continues as independent subsidiary under CEO Sheldon Kimber. Simultaneously, TPG, CAI &amp; Greenbelt Capital spun off Intersect's grid-tied power business into <strong>IPX Power</strong>, a new IPP. Sets precedent likely to pressure Microsoft, Amazon &amp; Meta toward similar acquisitions.
+        <div class="sources">
+          <a class="src" href="https://www.pv-tech.org/google-finalises-intersect-acquisition-to-bring-data-centre-power-in-house/" target="_blank">PV-Tech</a>
+          <a class="src" href="https://www.solarpowerworldonline.com/2026/03/after-google-takeover-intersect-changes-name-to-ipx-power/" target="_blank">Solar Power World</a>
+          <a class="src" href="https://abc.xyz/investor/news/news-details/2025/Alphabet-Announces-Agreement-to-Acquire-Intersect-to-Advance-U-S--Energy-Innovation-2025-DVIuVDM9wW/default.aspx" target="_blank">Alphabet IR</a>
+        </div>
+      </td>
+    </tr>
+
+    </tbody>
+  </table></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+  SECTION 3 — PARTNERSHIPS, JVs & PROJECT DEVELOPMENT
+═══════════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="sec-header" id="hdr-partner" onclick="toggle('partner')">
+    <span class="sec-icon">🤝</span>
+    <span class="sec-title">Partnerships, JVs &amp; Project Development</span>
+    <span class="sec-count">3 deals · 12.2 GW+ capacity</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="sec-body" id="body-partner">
+  <div class="table-wrap"><table>
+    <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+    <thead><tr><th>Date</th><th>Counterparty A</th><th>Counterparty B</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+    <tbody>
+
+    <!-- SB Energy / DOE gas-fired -->
+    <tr>
+      <td class="date-cell">02/17/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Sponsor</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/sbenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#3A5A8A\'>SBE</div>'" alt="SB Energy"></div>
+            <span class="party-name">SB Energy</span>
+          </div>
+          <p class="party-sub">SoftBank-backed US renewables developer</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Co-Sponsor</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/US-DeptOfEnergy-Seal.svg/200px-US-DeptOfEnergy-Seal.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#002868\'>DOE</div>'" alt="US DOE"></div>
+            <span class="party-name buyer">U.S. DOE (Announcement)</span>
+          </div>
+          <p class="party-sub">Federal support / permitting for large-scale gas-fired generation</p>
+        </div>
+      </td>
+      <td class="val-cell">$33,000<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">est. project value</small></td>
+      <td class="cap-cell">9,200 MW</td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag dev">Project Dev.</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">SB Energy and DOE announced a gas-fired generation project development of 9.2 GW — described as the largest in U.S. history per the Wells Fargo newsletter. Reflects the Trump administration's emphasis on dispatchable, firm generation to meet surging electricity demand from AI data centers. While gas-fired, this scale of project development influences the broader power market dynamics that affect renewable energy pricing, interconnection queues, and data center offtake competition. Notable that a SoftBank-backed renewables developer is leading a gas project in this policy environment.
+        <div class="sources">Wells Fargo Q1'26 Report</div>
+      </td>
+    </tr>
+
+    <!-- Xcel + Google / Minnesota -->
+    <tr>
+      <td class="date-cell">02/25/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Utility Partner</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Xcel_Energy_logo.svg/200px-Xcel_Energy_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#0056B3\'>XEL</div>'" alt="Xcel Energy"></div>
+            <span class="party-name">Xcel Energy</span>
+          </div>
+          <p class="party-sub">Upper Midwest utility; Minnesota clean energy buildout</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Offtaker / Partner</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/200px-Google_2015_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#4285F4\'>G</div>'" alt="Google"></div>
+            <span class="party-name buyer">Google</span>
+          </div>
+          <p class="party-sub">Offtake / strategic partnership for data center power supply</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">1,900 MW<br><small style="font-size:9px;color:var(--muted)">1,400 wind<br>200 solar<br>300 storage</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag part">Partnership</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Xcel Energy and Google announced a 1.9 GW Minnesota clean energy buildout partnership: 1,400 MW wind, 200 MW solar, and 300 MW of storage. Google is leveraging its relationship with Xcel to secure long-term clean energy supply for its data centers in the region through a utility-structured partnership rather than a direct acquisition. Demonstrates the continued role of regulated utilities as clean energy delivery vehicles for hyperscalers, particularly in markets where utility infrastructure and regulatory frameworks are well-established.
+        <div class="sources">Wells Fargo Q1'26 Report</div>
+      </td>
+    </tr>
+
+    <!-- Energy Vault + Peak Energy AI storage JV -->
+    <tr>
+      <td class="date-cell">02/09/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Storage Provider</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Energy_Vault_Logo.svg/200px-Energy_Vault_Logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#1A5C8A\'>EV</div>'" alt="Energy Vault"></div>
+            <span class="party-name">Energy Vault</span>
+          </div>
+          <p class="party-sub">Grid-scale energy storage solutions, NYSE: NRGV</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">AI Offtaker</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#5A3A8A">PKE</div>
+            <span class="party-name buyer">Peak Energy</span>
+          </div>
+          <p class="party-sub">AI-dedicated energy storage offtaker / collaborator</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">1,500 MWh</td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag jv">JV / Offtake</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Energy Vault and Peak Energy announced a 1.5 GWh AI-dedicated storage collaboration — a sodium-ion battery offtake agreement designed to provide reliable, high-cycle energy storage for AI compute workloads. Sodium-ion chemistry is gaining traction for applications where high cycle frequency and thermal stability are critical, particularly in behind-the-meter and data center-adjacent storage. Signals an emerging category of AI-specific energy storage infrastructure deals as compute demand creates new requirements for storage performance profiles.
+        <div class="sources">Wells Fargo Q1'26 Report</div>
+      </td>
+    </tr>
+
+    </tbody>
+  </table></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+  SECTION 4 — PLATFORM / DEVELOPER ACQUISITIONS
+═══════════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="sec-header" id="hdr-platform" onclick="toggle('platform')">
+    <span class="sec-icon">🏢</span>
+    <span class="sec-title">Platform / Developer Acquisitions</span>
+    <span class="sec-count">3 deals</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="sec-body" id="body-platform">
+  <div class="table-wrap"><table>
+    <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+    <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+    <tbody>
+
+    <!-- ESS / VoltStorage -->
+    <tr>
+      <td class="date-cell">02/18/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Target</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#5A3A7A">VS</div>
+            <span class="party-name">VoltStorage GmbH</span>
+          </div>
+          <p class="party-sub">German IP and assets; long-duration energy storage technology</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/essinc.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#2A6A4A\'>ESS</div>'" alt="ESS Tech"></div>
+            <span class="party-name buyer">ESS Tech, Inc.</span>
+          </div>
+          <p class="party-sub">Iron flow battery technology company, NYSE: GWH; long-duration storage</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">IP / tech assets</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag corp">Acquisition</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">ESS Tech acquired VoltStorage GmbH's IP and assets to bolster its long-duration energy storage technology portfolio. VoltStorage focuses on vanadium redox flow battery technology — complementary to ESS's iron flow battery platform. Long-duration storage (LDES) is attracting increasing M&amp;A activity as grid operators seek storage solutions capable of 8–100+ hour discharge durations, which lithium-ion cannot economically provide. Acquisition strengthens ESS's IP position ahead of anticipated LDES market growth driven by renewable integration needs.
+        <div class="sources">Wells Fargo Q1'26 Report</div>
+      </td>
+    </tr>
+
+    <!-- Exus / Ozone -->
+    <tr>
+      <td class="date-cell">03/06/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Target</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#3D7A5C">OZ</div>
+            <span class="party-name">Ozone Renewables</span>
+          </div>
+          <p class="party-sub">Greenfield developer; wind, solar &amp; storage pipeline across PJM, MISO, WECC &amp; SPP</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/exusrenewables.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#1B5C3A\'>EX</div>'" alt="Exus Renewables"></div>
+            <span class="party-name buyer">Exus Renewables North America</span>
+          </div>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">Pipeline<br><small style="font-size:9px;color:var(--muted)">Multi-GW dev.</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag corp">Platform Buyout</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Exus Renewables NA acquired Ozone Renewables to build in-house greenfield development capabilities and strengthen early-stage pipeline across four ISOs (PJM, MISO, WECC, SPP). Brings Ozone's full team and project pipeline (wind, solar, storage). Reflects FTI-identified trend of platforms acquiring interconnection queue positions — with PJM wait times now 4–5 years, approved queue positions are a primary M&amp;A currency.
+        <div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/exus-renewables-north-america-acquires-ozone-renewables-5ZSGax" target="_blank">PrivSource</a></div>
+      </td>
+    </tr>
+
+    <!-- Hecate SPAC -->
+    <tr>
+      <td class="date-cell">1Q '26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Target</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/hecateenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#2E5C8C\'>HE</div>'" alt="Hecate Energy"></div>
+            <span class="party-name">Hecate Energy</span>
+          </div>
+          <p class="party-sub">US developer: utility-scale solar, BESS, wind &amp; thermal; 12+ GW sold historically</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">SPAC Acquirer</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#3D5F7A">EGH</div>
+            <span class="party-name buyer">EGH Acquisition Corp.</span>
+          </div>
+          <p class="party-sub">SPAC public listing vehicle; close expected mid-2026</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">SPAC listing</small></td>
+      <td class="cap-cell">12+ GW<br><small style="font-size:9px;color:var(--muted)">hist. sold</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag spac">SPAC Merger</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">Hecate Energy merging with EGH Acquisition Corp. to list publicly — targeting capital access to scale its pipeline amid surging demand from data centers and AI. Hecate has sold 12+ GW of developed projects to infrastructure funds historically. The SPAC listing provides liquidity and capital to compete for interconnection positions and land rights. Close pending shareholder and regulatory approvals; expected mid-2026.
+        <div class="sources"><a class="src" href="https://dealroom.net/blog/upcoming-m-a" target="_blank">DealRoom</a></div>
+      </td>
+    </tr>
+
+    </tbody>
+  </table></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+  SECTION 5 — SUPPLY CHAIN, TECHNOLOGY & LICENSING
+═══════════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="sec-header" id="hdr-supply" onclick="toggle('supply')">
+    <span class="sec-icon">⚙️</span>
+    <span class="sec-title">Supply Chain, Technology &amp; Licensing</span>
+    <span class="sec-count">4 deals</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="sec-body" id="body-supply">
+  <div class="table-wrap"><table>
+    <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+    <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity / Scope</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+    <tbody>
+
+    <!-- First Solar / Oxford PV -->
+    <tr>
+      <td class="date-cell">02/24/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Licensor</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/oxfordpv.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#3A5A2A\'>OPV</div>'" alt="Oxford PV"></div>
+            <span class="party-name">Oxford PV</span>
+          </div>
+          <p class="party-sub">UK perovskite PV technology leader; perovskite-silicon tandem cell IP</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Licensee</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/First_Solar_logo.svg/200px-First_Solar_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#003087\'>FSLR</div>'" alt="First Solar"></div>
+            <span class="party-name buyer">First Solar</span>
+          </div>
+          <p class="party-sub">Largest US solar manufacturer, NASDAQ: FSLR; CadTel thin-film technology</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">Patent license</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag lic">Licensing</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">First Solar entered a perovskite patent licensing agreement with Oxford PV to support U.S. PV technology development. Perovskite-silicon tandem cells are the leading next-generation PV technology, with demonstrated efficiencies above 33% vs. ~22-24% for current commercial silicon. First Solar's interest in perovskite IP signals potential future integration into its US manufacturing roadmap — critical given OBBBA domestic content requirements. Strategically positions First Solar to maintain technology leadership as perovskite-silicon tandem approaches commercialization in the 2027–2030 timeframe.
+        <div class="sources">Wells Fargo Q1'26 Report</div>
+      </td>
+    </tr>
+
+    <!-- MacLean-Fogg / OMCO Solar -->
+    <tr>
+      <td class="date-cell">02/25/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Target</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/omcosolar.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#D4820A\'>OM</div>'" alt="OMCO Solar"></div>
+            <span class="party-name">OMCO Solar</span>
+          </div>
+          <p class="party-sub">US factory-direct manufacturer of solar trackers &amp; fixed-tilt racking; Arizona</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/macleanfogg.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#2C4A6E\'>MF</div>'" alt="MacLean-Fogg"></div>
+            <span class="party-name buyer">MacLean-Fogg</span>
+          </div>
+          <p class="party-sub">Industrial manufacturer; diversified components &amp; systems</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">US mfg.<br><small style="font-size:9px;color:var(--muted)">Tracker / racking</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag mfg">Manufacturing Acq.</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">MacLean-Fogg acquired OMCO Solar, a US domestic manufacturer of solar trackers and fixed-tilt racking. OMCO Solar continues as a distinct brand. Driven by OBBBA domestic content requirements that tie ITC/PTC credits to US-sourced components — creating a direct M&amp;A incentive for industrial manufacturers to control domestic renewable component manufacturing capacity.
+        <div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/maclean-fogg-acquires-omco-solar-9zSmyA" target="_blank">PrivSource</a></div>
+      </td>
+    </tr>
+
+    <!-- GameChange / Terrasmart eBOS -->
+    <tr>
+      <td class="date-cell">02/24/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Seller / Target</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/gibraltar1.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#5A3A7A\'>GI</div>'" alt="Gibraltar Industries"></div>
+            <span class="party-name">Terrasmart / Gibraltar Industries</span>
+          </div>
+          <p class="party-sub">eBOS division: pre-engineered electrical balance-of-systems; Grand Rapids, MI mfg.</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/gamechangesolar.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#1B5C3A\'>GC</div>'" alt="GameChange Energy"></div>
+            <span class="party-name buyer">GameChange Energy Technologies</span>
+          </div>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">US mfg.<br><small style="font-size:9px;color:var(--muted)">eBOS systems</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag div">Divestiture</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">GameChange Energy acquired the eBOS (Electrical Balance of Systems) division from Terrasmart (Gibraltar Industries subsidiary), adding a pre-engineered/prefabricated electrical product line and a Grand Rapids, MI manufacturing facility. Expands GameChange's module-to-grid capabilities — integrating eBOS alongside existing tracker, racking, transformer, and grid-equipment offerings for a more comprehensive utility-scale solar solution.
+        <div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/gamechange-energy-acquires-terrasmart-ebos-division-from-gibraltar-industries-plSrEz" target="_blank">PrivSource</a></div>
+      </td>
+    </tr>
+
+    <!-- QE Solar / Doman -->
+    <tr>
+      <td class="date-cell">02/12/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Target</span>
+          <div class="party-row">
+            <div class="logo-init" style="background:#2A6A6A">DE</div>
+            <span class="party-name">Doman Energy Group</span>
+          </div>
+          <p class="party-sub">Engineering firm: utility-scale solar, BESS &amp; EV electrical infrastructure design</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Buyer</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://logo.clearbit.com/qesolar.com" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#D4820A\'>QE</div>'" alt="QE Solar"></div>
+            <span class="party-name buyer">QE Solar LLC</span>
+          </div>
+          <p class="party-sub">National O&amp;M provider: solar, BESS, EV charging</p>
+        </div>
+      </td>
+      <td class="val-cell">N/A</td>
+      <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">Eng. services</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag vert">Vertical Integration</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">QE Solar acquired Doman Energy Group to vertically integrate engineering capabilities into its O&amp;M platform. Doman provides utility-scale design, commissioning, remote monitoring, MV/HV services, aerial thermography, and QA/QC. Combined platform offers full-lifecycle coverage from commissioning through long-term O&amp;M — reflecting the trend of O&amp;M providers building in-house technical depth as asset portfolios scale in complexity.
+        <div class="sources"><a class="src" href="https://www.altenergymag.com/news/2026/02/12/qe-solar-acquires-doman-energy-group-to-expand-in-house-engineering-capabilities/46757/" target="_blank">AltEnergyMag</a></div>
+      </td>
+    </tr>
+
+    </tbody>
+  </table></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+  SECTION 6 — NOTABLE EXIT: OFFSHORE WIND
+═══════════════════════════════════════════════════════════ -->
+<div class="section-block">
+  <div class="sec-header" id="hdr-exit" onclick="toggle('exit')" style="background:#7A2020">
+    <span class="sec-icon">⚠️</span>
+    <span class="sec-title">Notable Exit — Offshore Wind (Policy-Driven)</span>
+    <span class="sec-count">1 event · ~$1B settlement · 4.2 GW capacity retired</span>
+    <span class="chevron">▾</span>
+  </div>
+  <div class="sec-body" id="body-exit">
+  <div class="table-wrap"><table>
+    <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+    <thead><tr><th>Date</th><th>Exiting Party</th><th>Counterparty</th><th>Settlement ($MM)</th><th>Capacity Retired</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+    <tbody>
+    <tr class="wind-exit">
+      <td class="date-cell">03/23/26</td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Exiting Party</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Total_SE_logo.svg/200px-Total_SE_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#D40000\'>TE</div>'" alt="TotalEnergies"></div>
+            <span class="party-name exit-party">TotalEnergies</span>
+          </div>
+          <p class="party-sub">Attentive Energy (3 GW, NC/NY) &amp; Carolina Long Bay (1.2 GW) — two active US offshore wind development leases relinquished</p>
+        </div>
+      </td>
+      <td>
+        <div class="party-cell">
+          <span class="p-label">Counterparty</span>
+          <div class="party-row">
+            <div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Seal_of_the_United_States_Department_of_the_Interior.svg/200px-Seal_of_the_United_States_Department_of_the_Interior.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#002868\'>DOI</div>'" alt="US DOI"></div>
+            <span class="party-name exit-party">U.S. Dept. of Interior</span>
+          </div>
+          <p class="party-sub">Lease relinquishment; TotalEnergies exits US offshore wind entirely</p>
+        </div>
+      </td>
+      <td class="val-cell" style="color:var(--red)">~$1,000<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">received by TotalEnergies</small></td>
+      <td class="cap-cell" style="color:var(--red)">4,200 MW<br><small style="font-size:9px;color:var(--muted)">offshore wind retired</small></td>
+      <td>
+        <div class="tags">
+          <div class="tag-row"><span class="tag exit">Lease Exit</span></div>
+          <div class="tag-row"><span class="tag gc">GC</span></div>
+        </div>
+      </td>
+      <td class="cmt-cell">TotalEnergies signed settlement agreements with the US Dept. of Interior to relinquish both Attentive Energy (3 GW, NC/NY) and Carolina Long Bay (1.2 GW) offshore wind leases, receiving nearly $1B in compensation and <strong>exiting US offshore wind entirely.</strong> TotalEnergies will reinvest proceeds into other US energy activities — separately the company holds 1 GW of onshore TX solar under PPA with Google (Feb 2026). Attentive Energy was covered under FAST-41 federal permitting with projected completion by end-2029 prior to settlement. <strong style="color:var(--red)">Key risk signal for infrastructure funds with offshore wind exposure: regulatory and political framework for US offshore wind has materially deteriorated under current administration.</strong>
+        <div class="sources"><a class="src" href="https://www.utilitydive.com/news/trump-administration-plans-buyout-offshore-wind-leases/814944/" target="_blank">Utility Dive</a></div>
+      </td>
+    </tr>
+    </tbody>
+  </table></div>
+  </div>
+</div>
+
+
+<!-- MARKET CONTEXT -->
+<div class="context">
+  <h3>Market Context &amp; Key Themes — Q1 2026</h3>
+  <div class="ctx-grid">
+    <div class="ctx-item"><strong>Mega-Deal Cycle Continues</strong>Power &amp; utility deal value hit $142B in 2025 (nearly 2× 2024 per PwC), carrying into Q1 2026. The AES take-private ($33.4B TEV) is the largest clean energy infrastructure take-private of the current cycle, signaling aggressive private capital deployment into scale generation.</div>
+    <div class="ctx-item"><strong>Hyperscaler Vertical Integration</strong>Google's $4.75B Intersect close (Mar 12), Amazon's $83M Oregon site win, and Google's 1.9 GW Xcel partnership mark a structural shift: Big Tech is acquiring generating assets outright, bypassing interconnection queues stretching 7–12 years in some regions.</div>
+    <div class="ctx-item"><strong>Offshore Wind Political Risk Elevated</strong>TotalEnergies' $1B lease relinquishment (4.2 GW combined, Mar 23, 2026) signals the practical shutdown of federal offshore wind support. Infrastructure funds should reassess offshore exposure, permitting timeline assumptions, and capital allocation to offshore development.</div>
+    <div class="ctx-item"><strong>OBBBA Reshaping Deal Flow</strong>The One Big Beautiful Bill Act tightened ITC/PTC qualification windows, compressing developer timelines and pushing acquirers toward deployment-ready operating assets with secured interconnection. Greenfield M&amp;A now centers on acquiring queue positions and developer talent.</div>
+    <div class="ctx-item"><strong>Gas Generation Returns as Bridge</strong>The SB Energy / DOE 9.2 GW gas-fired project announcement — described as the largest in US history — reflects the current administration's emphasis on dispatchable generation to meet AI-driven load growth. Gas increasingly positioned as bridge fuel in the near-term capacity mix.</div>
+    <div class="ctx-item"><strong>Long-Duration Storage Emerging</strong>ESS/VoltStorage and Energy Vault/Peak Energy AI storage deals signal growing M&amp;A activity in LDES technologies. AI compute workloads require high-cycle, reliable storage distinct from grid-balancing use cases, creating new buyer segments and offtake structures for storage developers.</div>
+    <div class="ctx-item"><strong>Supply Chain M&amp;A Accelerates</strong>OBBBA domestic content requirements drive industrial manufacturers into renewable supply chain acquisitions (MacLean-Fogg/OMCO Solar; GameChange/Terrasmart eBOS; First Solar/Oxford PV licensing). US-manufactured components now directly affect ITC/PTC credit eligibility.</div>
+    <div class="ctx-item"><strong>Scale as Competitive Moat</strong>Per PwC / Utility Dive: "scale will determine winners and losers." Renewable asset valuations have stabilized after 2024–25 compression — analysts expect this to unlock more seller activity in 2H 2026, particularly operating portfolios like Enel's $1B, 830 MW acquisition from Excelsior.</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>Sources:</strong> &nbsp;
+  <strong style="color:var(--orange)">Wells Fargo March 2026 Renewable Energy Report</strong> &nbsp;·&nbsp;
+  <a href="https://www.utilitydive.com/news/energy-industry-utility-ipp-mergers-pwc/808228/" target="_blank">Utility Dive</a> &nbsp;·&nbsp;
+  <a href="https://www.latitudemedia.com/news/power-sector-ma-deals-have-nearly-doubled-since-2024/" target="_blank">Latitude Media</a> &nbsp;·&nbsp;
+  <a href="https://pv-magazine-usa.com/2026/01/02/google-acquires-clean-energy-developer-intersect-power-for-nearly-5-billion/" target="_blank">PV Magazine USA</a> &nbsp;·&nbsp;
+  <a href="https://www.esgtoday.com/blackrock-eqt-lead-33-billion-acquisition-of-aes/" target="_blank">ESG Today</a> &nbsp;·&nbsp;
+  <a href="https://www.pv-tech.org/google-finalises-intersect-acquisition-to-bring-data-centre-power-in-house/" target="_blank">PV-Tech</a> &nbsp;·&nbsp;
+  <a href="https://www.privsource.com/acquisitions/renewable-energy/2026" target="_blank">PrivSource</a> &nbsp;·&nbsp;
+  <a href="https://www.pwc.com/us/en/industries/energy-utilities-resources/library/power-utilities-deals-outlook.html" target="_blank">PwC 2026 Outlook</a> &nbsp;·&nbsp;
+  <a href="https://www.fticonsulting.com/insights/articles/power-renewables-energy-transition-2025-ma-year-review-2026-outlook" target="_blank">FTI Consulting M&amp;A Review</a> &nbsp;·&nbsp;
+  <a href="https://www.opb.org/article/2026/03/11/oregon-amazon-solar-energy-storage-project/" target="_blank">OPB</a> &nbsp;·&nbsp;
+  <a href="https://dealroom.net/blog/upcoming-m-a" target="_blank">DealRoom</a> &nbsp;·&nbsp;
+  <a href="https://kpmg.com/us/en/articles/mergers-acquisitions-trends-energy-natural-resources-chemicals.html" target="_blank">KPMG Energy M&amp;A Trends</a> &nbsp;·&nbsp;
+  <a href="https://www.bloomberg.com/news/articles/2026-03-02/blackrock-s-gip-and-eqt-to-buy-aes-for-10-7-billion" target="_blank">Bloomberg</a>
+  <br><br>
+  <em>Deal values shown where publicly disclosed. N/A indicates undisclosed or not applicable. Information compiled from public sources and proprietary research for internal use only. Not investment advice.</em>
+</footer>
+
+<script>
+const SECS = ['asset','mega','partner','platform','supply','exit'];
+function toggle(id) {
+  const body = document.getElementById('body-'+id);
+  const hdr  = document.getElementById('hdr-'+id);
+  const open = !body.classList.contains('collapsed');
+  body.classList.toggle('collapsed', open);
+  hdr.classList.toggle('collapsed', open);
+  hdr.querySelector('.chevron').textContent = open ? '▸' : '▾';
+}
+function expandAll()  { SECS.forEach(id => { document.getElementById('body-'+id).classList.remove('collapsed'); document.getElementById('hdr-'+id).classList.remove('collapsed'); document.getElementById('hdr-'+id).querySelector('.chevron').textContent='▾'; }); }
+function collapseAll(){ SECS.forEach(id => { document.getElementById('body-'+id).classList.add('collapsed');    document.getElementById('hdr-'+id).classList.add('collapsed');    document.getElementById('hdr-'+id).querySelector('.chevron').textContent='▸'; }); }
+</script>
+</body>
+</html>
