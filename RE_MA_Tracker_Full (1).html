@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Renewable Energy & Sustainable Infrastructure M&A Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B3A5C;--navy-l:#24527F;--navy-pale:#EEF3F8;--navy-mid:#C8D8E8;
+  --accent:#2E7D99;--gold:#9A6010;--red:#8B2A2A;--green:#2E7A4F;
+  --purple:#5A3A7A;--teal:#2A6A6A;--steel:#3D5F7A;--orange:#A04A10;
+  --bg:#FFFFFF;--surface:#F7F9FC;--border:#DDE4EC;--text:#1A2332;--muted:#5E7491;--row-hover:#EAF1F8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:13px;line-height:1.5;padding:2.5rem 2rem 5rem}
+
+/* PAGE HEADER */
+.page-header{max-width:1700px;margin:0 auto 1.5rem;padding-bottom:1rem;border-bottom:3px solid var(--navy)}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+h1{font-size:1.2rem;font-weight:700;color:var(--navy);line-height:1.25}
+h1 em{font-style:normal;color:var(--accent)}
+.meta-row{display:flex;gap:2rem;margin-top:.5rem;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.meta-row span strong{color:var(--text);font-weight:600}
+
+/* QUARTER FILTER */
+.qfilter-wrap{max-width:1700px;margin:0 auto 1.2rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.qfilter-label{font-size:10.5px;font-weight:600;color:var(--navy);letter-spacing:.05em;text-transform:uppercase;margin-right:.3rem}
+.qbtn{padding:.38rem .9rem;border:1.5px solid var(--navy-mid);border-radius:20px;background:var(--surface);color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none;font-family:inherit}
+.qbtn:hover{border-color:var(--navy);color:var(--navy);background:var(--navy-pale)}
+.qbtn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.qbtn.q1.active{background:#1B3A5C}
+.qbtn.q2.active{background:#2E7D99;border-color:var(--accent)}
+
+/* DYNAMIC KPI BAR */
+.kpi-bar{max-width:1700px;margin:0 auto 1.5rem;display:flex;gap:.7rem;flex-wrap:wrap}
+.kpi{flex:1 1 130px;background:var(--navy);border-radius:6px;padding:.75rem 1rem;color:#fff;transition:opacity .2s}
+.kpi-num{font-size:1.45rem;font-weight:700;display:block;line-height:1;margin-bottom:.18rem}
+.kpi-num.gold{color:#F0B450}.kpi-num.teal{color:#7ECFEA}.kpi-num.green{color:#7CE8A8}
+.kpi-label{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:#A8C4D8}
+
+/* LEGEND */
+.legend{max-width:1700px;margin:0 auto 1rem;display:flex;align-items:center;gap:.5rem 1rem;flex-wrap:wrap;font-size:10.5px;color:var(--muted);padding:.6rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:6px}
+.legend strong{color:var(--navy);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-right:.3rem}
+.leg-item{display:flex;align-items:center;gap:.3rem}
+
+/* EXPAND/COLLAPSE */
+.controls{max-width:1700px;margin:0 auto .7rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.ctrl-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .75rem;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--navy);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none;font-family:inherit}
+.ctrl-btn:hover{background:var(--navy-pale);border-color:var(--navy-mid)}
+.ctrl-hint{font-size:11px;color:var(--muted)}
+
+/* QUARTER BLOCK — wraps all sections for one quarter */
+.quarter-block{transition:opacity .25s}
+.quarter-block.hidden{display:none}
+
+/* QUARTER DIVIDER */
+.q-divider{max-width:1700px;margin:1.5rem auto .7rem;display:flex;align-items:center;gap:.75rem}
+.q-divider-line{flex:1;height:2px}
+.q-divider-pill{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;padding:.25rem .9rem;border:1.5px solid;border-radius:20px}
+.q1-pill{color:var(--navy);border-color:var(--navy-mid);background:var(--navy-pale)}
+.q1-line{background:linear-gradient(to right,var(--navy-mid),transparent)}
+.q2-pill{color:var(--accent);border-color:#A8D8E8;background:#EEF8FC}
+.q2-line{background:linear-gradient(to right,var(--accent),transparent)}
+.q2-line-r{background:linear-gradient(to left,var(--accent),transparent)}
+.q1-line-r{background:linear-gradient(to left,var(--navy-mid),transparent)}
+
+/* SECTION BLOCK */
+.section-block{max-width:1700px;margin:0 auto .85rem}
+.sec-header{display:flex;align-items:center;gap:.55rem;padding:.6rem 1rem;background:var(--navy);border-radius:6px 6px 0 0;cursor:pointer;user-select:none}
+.sec-header.collapsed{border-radius:6px}
+.sec-icon{font-size:.85rem;line-height:1}
+.sec-title{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#C8DCF0;flex:1}
+.sec-count{font-size:10px;color:#7EAED4;white-space:nowrap}
+.chevron{margin-left:.4rem;color:#7EAED4;transition:transform .25s;font-size:11px}
+.sec-header.collapsed .chevron{transform:rotate(-90deg)}
+
+/* SECTION BODY */
+.sec-body{overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1),opacity .2s;max-height:6000px;opacity:1}
+.sec-body.collapsed{max-height:0;opacity:0;pointer-events:none}
+
+/* TABLE */
+.table-wrap{border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;overflow-x:auto;box-shadow:0 2px 8px rgba(27,58,92,.05)}
+table{width:100%;border-collapse:collapse;min-width:1150px;table-layout:fixed}
+col.c-date{width:75px}col.c-seller{width:175px}col.c-buyer{width:175px}
+col.c-val{width:95px}col.c-cap{width:80px}col.c-type{width:155px}col.c-cmt{width:auto}
+
+thead tr{background:var(--navy-pale);border-bottom:2px solid var(--navy-mid)}
+th{font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--navy);padding:.6rem .8rem;text-align:left;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:nth-child(even):not(.wind-exit){background:var(--surface)}
+tbody tr:hover:not(.wind-exit){background:var(--row-hover)}
+td{padding:.7rem .8rem;vertical-align:top;font-size:11.5px;line-height:1.5;overflow:hidden}
+td.date-cell{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--navy);font-weight:500;white-space:nowrap}
+td.val-cell{font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;color:var(--gold)}
+td.cap-cell{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--teal);font-weight:500}
+td.cmt-cell{color:var(--text)}
+
+/* PARTY CELL */
+.party-cell{display:flex;flex-direction:column;gap:.35rem}
+.p-label{font-size:8.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.party-row{display:flex;align-items:center;gap:.5rem}
+.logo-box{width:28px;height:28px;border-radius:5px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.07)}
+.logo-box img{width:24px;height:24px;object-fit:contain;display:block}
+.logo-init{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:-.3px}
+.party-name{font-weight:600;font-size:11.5px;color:var(--navy);line-height:1.25}
+.party-name.buyer{color:var(--accent)}
+.party-name.exit-party{color:var(--red)}
+.party-sub{font-size:10px;color:var(--muted);line-height:1.4;margin-top:.08rem}
+
+/* DEAL TYPE TAGS */
+.tags{display:flex;flex-direction:column;gap:.3rem}
+.tag-row{display:flex;flex-wrap:wrap;gap:.25rem}
+.tag{display:inline-block;border-radius:3px;padding:.14rem .38rem;font-size:8.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;white-space:nowrap}
+.tag.take{background:var(--navy)}.tag.corp{background:var(--navy-l)}.tag.asset{background:var(--accent)}
+.tag.bkrp{background:var(--red)}.tag.spac{background:var(--green)}.tag.exit{background:#7A3020}
+.tag.mfg{background:var(--steel)}.tag.vert{background:var(--teal)}.tag.div{background:var(--purple)}
+.tag.part{background:#4A7A4A}.tag.lic{background:#6A5A2A}.tag.jv{background:#3A5A7A}
+.tag.dev{background:#5A3A5A}.tag.gc{background:#1B5C3A}.tag.btm{background:#6B3A1A}
+.tag.gf{background:#3A6A2A}
+
+/* SOURCE LINKS */
+.sources{margin-top:.4rem;display:flex;flex-wrap:wrap;gap:.2rem .45rem;align-items:center;font-size:9.5px;color:var(--muted)}
+.src{font-size:9.5px;color:var(--accent);text-decoration:none;font-weight:500;border-bottom:1px dotted var(--accent)}
+.src:hover{border-bottom-style:solid}
+.src::before{content:"↗ ";opacity:.7;font-size:8px}
+
+/* WIND EXIT */
+tr.wind-exit td{background:#FFF5F3}
+tr.wind-exit:hover td{background:#FFE9E4}
+
+/* MARKET CONTEXT */
+.context{max-width:1700px;margin:1.4rem auto 0;border:1px solid var(--border);border-left:4px solid var(--navy);border-radius:6px;padding:1rem 1.3rem;background:var(--surface)}
+.context.q2ctx{border-left-color:var(--accent)}
+.context h3{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--navy);margin-bottom:.75rem}
+.context.q2ctx h3{color:var(--accent)}
+.ctx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:.65rem}
+.ctx-item{background:#fff;border:1px solid var(--border);border-radius:5px;padding:.65rem .85rem;font-size:11px;line-height:1.55}
+.ctx-item strong{color:var(--navy);font-weight:600;display:block;margin-bottom:.18rem}
+
+/* FOOTER */
+footer{max-width:1700px;margin:1.3rem auto 0;font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:.75rem;line-height:1.65}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <p class="eyebrow">Infrastructure Fund Research &nbsp;·&nbsp; Internal Use Only &nbsp;·&nbsp; Confidential</p>
+  <h1 id="main-title">2026 &nbsp;<em>Renewable Energy &amp; Sustainable Infrastructure</em>&nbsp; M&amp;A Activity Tracker — United States</h1>
+  <div class="meta-row">
+    <span>Coverage: <strong id="coverage-text">January 1 – June 30, 2026</strong></span>
+    <span>Compiled: <strong id="compiled-date"></strong></span>
+    <span>Sources: <strong>InfraDeals Intelligence · Infralogic · Wells Fargo March 2026 Report · Utility Dive · PV Magazine · ESG Today · PrivSource · PwC · FTI Consulting</strong></span>
+  </div>
+</header>
+
+<!-- QUARTER FILTER -->
+<div class="qfilter-wrap">
+  <span class="qfilter-label">Filter by Quarter:</span>
+  <button class="qbtn active" id="btn-all" onclick="setFilter('all')">All Quarters</button>
+  <button class="qbtn q1" id="btn-q1" onclick="setFilter('q1')">Q1 2026 (Jan–Mar)</button>
+  <button class="qbtn q2" id="btn-q2" onclick="setFilter('q2')">Q2 2026 (Apr–Jun)</button>
+</div>
+
+<!-- DYNAMIC KPI BAR -->
+<div class="kpi-bar" id="kpi-bar">
+  <div class="kpi"><span class="kpi-num gold" id="kpi-deals">57</span><span class="kpi-label" id="kpi-deals-lbl">Total Deals / Events</span></div>
+  <div class="kpi"><span class="kpi-num teal" id="kpi-val">~$115B+</span><span class="kpi-label">Total Value (Disclosed)</span></div>
+  <div class="kpi"><span class="kpi-num gold" id="kpi-mega">6</span><span class="kpi-label">Mega-Deals ($1B+)</span></div>
+  <div class="kpi"><span class="kpi-num green" id="kpi-tech">4</span><span class="kpi-label">Hyperscaler / Tech-Driven</span></div>
+  <div class="kpi"><span class="kpi-num" style="color:#7CE8A8" id="kpi-gw">21+</span><span class="kpi-label">GW Capacity Involved</span></div>
+  <div class="kpi"><span class="kpi-num" style="color:#7ECFEA" id="kpi-q1">21</span><span class="kpi-label">Q1 2026 Deals</span></div>
+  <div class="kpi"><span class="kpi-num" style="color:#F0B450" id="kpi-q2">36</span><span class="kpi-label">Q2 2026 Deals (thru Jun 30)</span></div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <strong>Tag Legend:</strong>
+  <span class="leg-item"><span class="tag gc">GC</span>&nbsp;Grid-Connected / Utility-Scale</span>
+  <span class="leg-item"><span class="tag btm">BTM</span>&nbsp;Behind-the-Meter / Distributed</span>
+  <span style="color:var(--border)">|</span>
+  <span class="leg-item"><span class="tag take">Take-Private</span></span>
+  <span class="leg-item"><span class="tag asset">Asset Acq.</span></span>
+  <span class="leg-item"><span class="tag part">Partnership</span></span>
+  <span class="leg-item"><span class="tag jv">JV / PPA</span></span>
+  <span class="leg-item"><span class="tag dev">Project Dev.</span></span>
+  <span class="leg-item"><span class="tag gf" style="background:#3A6A2A">Greenfield</span></span>
+  <span class="leg-item"><span class="tag lic">Licensing</span></span>
+</div>
+
+<!-- EXPAND/COLLAPSE CONTROLS -->
+<div class="controls">
+  <button class="ctrl-btn" onclick="expandAll()">▾ &nbsp;Expand All</button>
+  <button class="ctrl-btn" onclick="collapseAll()">▸ &nbsp;Collapse All</button>
+  <span class="ctrl-hint">· Click any section header to toggle</span>
+</div>
+
+
+<!-- ████████████████████████████████████████████████
+     Q1 2026 QUARTER BLOCK
+████████████████████████████████████████████████ -->
+<div class="quarter-block" data-quarter="q1" id="qblock-q1">
+
+  <div class="q-divider">
+    <div class="q-divider-line q1-line"></div>
+    <span class="q-divider-pill q1-pill">Q1 2026 — January 1 to March 30</span>
+    <div class="q-divider-line q1-line-r"></div>
+  </div>
+
+  <!-- Q1 SECTION 1: ASSET / PROJECT ACQUISITIONS -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q1-asset" onclick="toggle('q1-asset')">
+      <span class="sec-icon">🏗️</span>
+      <span class="sec-title">Asset / Project-Level Acquisitions</span>
+      <span class="sec-count">6 deals · ~$6B+ disclosed</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q1-asset">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">02/21/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#3D6B3A">EEC</div><span class="party-name">Excelsior Energy Capital</span></div><p class="party-sub">U.S. wind + solar portfolio, 830 MW</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Enel_logo.svg/200px-Enel_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#6B0000\'>ENEL</div>'" alt="Enel"></div><span class="party-name buyer">Enel</span></div><p class="party-sub">Italian multinational; large US renewables platform</p></div></td>
+        <td class="val-cell">$1,000</td>
+        <td class="cap-cell">830 MW</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Enel acquired a U.S. wind and solar portfolio from Excelsior Energy Capital for $1B, adding 830 MW of operating wind and solar plants (~$1.2M/MW). Bolsters Enel North America's position in the US merchant and contracted power market. Consistent with Enel's aggressive US renewables build-out strategy, which continued into Q2 2026.<div class="sources">Wells Fargo Q1'26 Report</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">02/02/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#3A5A3A">HEX</div><span class="party-name">Hexagon Energy</span></div><p class="party-sub">Steward Creek Solar, ~1.6 GW, Illinois</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Brookfield_Asset_Management_logo.svg/200px-Brookfield_Asset_Management_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#1A4A7A\'>BAM</div>'" alt="Brookfield"></div><span class="party-name buyer">Brookfield TerraForm</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">~1,600 MW</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Brookfield TerraForm acquired the Steward Creek Solar project (~1.6 GW) in Illinois. One of the largest single solar project acquisitions of Q1 2026 by capacity. Aligns with Brookfield's strategy of acquiring large-scale development-stage or construction-ready assets across key North American markets under CEJA (Climate and Equitable Jobs Act).<div class="sources">Wells Fargo Q1'26 Report</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">Jan '26</td>
+        <td><div class="party-cell"><span class="p-label">Seller (Bankrupt)</span><div class="party-row"><div class="logo-init" style="background:#8B2A2A">SS</div><span class="party-name">Sunstone Solar</span></div><p class="party-sub">1,200 MW solar + 7,200 MWh BESS site, Morrow County, OR</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/200px-Amazon_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#FF9900;color:#000\'>AMZ</div>'" alt="Amazon"></div><span class="party-name buyer">Amazon / AWS</span></div><p class="party-sub">Outbid Puget Sound Energy ($82M)</p></div></td>
+        <td class="val-cell">$83</td>
+        <td class="cap-cell">1,200 MW<br><small style="font-size:9px;color:var(--muted)">+7,200 MWh BESS</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag bkrp">Bankruptcy Acq.</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Amazon won a competitive bankruptcy auction for Oregon's largest proposed solar-plus-storage site, outbidding regional utilities — a clear signal that hyperscalers now compete directly against utilities for greenfield renewable development sites. Project targeted to power AWS data centers in eastern Oregon.<div class="sources"><a class="src" href="https://www.opb.org/article/2026/03/11/oregon-amazon-solar-energy-storage-project/" target="_blank">OPB</a></div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">03/04/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#2E7D99">AC</div><span class="party-name">AC Power</span></div><p class="party-sub">28.8 MW community solar portfolio; NJ &amp; IL; brownfields</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#1B6B3A">SSI</div><span class="party-name buyer">Standard Solar, Inc.</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">28.8 MW</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Sale</span></div><div class="tag-row"><span class="tag btm">BTM</span></div></div></td>
+        <td class="cmt-cell">Standard Solar acquired a six-project, 28.8 MW community solar portfolio in NJ and IL. All projects sit on closed landfills/brownfields — favorable permitting profiles with strong ESG attributes. Reflects continued appetite for operating community solar in PJM/MISO markets. Portfolio's landfill/brownfield siting lowers permitting risk and supports strong ESG/land-reuse narrative.<div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/standard-solar-acquires-28-8-mw-community-solar-portfolio-from-ac-power-B6Sv9B" target="_blank">PrivSource</a> &nbsp;·&nbsp; GreenFront Q2'26</div></td>
+      </tr>
+
+      <tr>
+        <td class="date-cell">03/18/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Constellation_Energy_logo.svg/200px-Constellation_Energy_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#003087'>CEG</div>'" alt="Constellation Energy"></div><span class="party-name">Constellation Energy</span></div><p class="party-sub">4.4 GW of PJM generation assets — divestiture tied to Calpine-related regulatory commitments</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/lspower.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#2A4A7A'>LSP</div>'" alt="LS Power"></div><span class="party-name buyer">LS Power</span></div><p class="party-sub">US independent power company; large PJM generation portfolio</p></div></td>
+        <td class="val-cell">$5,000</td>
+        <td class="cap-cell">4,400 MW<br><small style="font-size:9px;color:var(--muted)">PJM generation</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag div">Asset Divestiture</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">One of the largest power asset divestitures of the period at $5B / ~$1.14M/MW. Constellation divests 4.4 GW of PJM generation as a regulatory remedy tied to its Calpine acquisition commitments. Demonstrates continued liquidity and strong buyer demand for large-scale generation portfolios — LS Power acquires meaningful PJM scale at a time when capacity prices are rising. Significant because it shows ongoing portfolio reshuffling in thermal/conventional generation as market participants reposition around PJM capacity value.<div class="sources">Wells Fargo Apr '26</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">03/12/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#3A5A8A">IBR</div><span class="party-name">Infrabridge</span></div><p class="party-sub">50% stake in Invenergy AMPCI Thermal Power portfolio — 5.4 GW gas &amp; thermal generation</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/arclightclean.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#2A2A5A'>ARC</div>'" alt="ArcLight"></div><span class="party-name buyer">ArcLight Capital Partners</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">5,400 MW<br><small style="font-size:9px;color:var(--muted)">Thermal portfolio (50% stake)</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Stake Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">ArcLight acquired Infrabridge's 50% stake in the Invenergy AMPCI Thermal Power portfolio (5.4 GW). Large thermal portfolio stake deal showing continued sponsor interest in dispatchable generation amid reliability concerns and rising AI/data center power demand. Reinforces the theme that not all strategic activity is renewables-only — firm power and thermal portfolios remain highly relevant and attractively valued in the current market environment.<div class="sources">Wells Fargo Apr '26</div></td>
+      </tr>      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q1 SECTION 2: MEGA-DEALS -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q1-mega" onclick="toggle('q1-mega')">
+      <span class="sec-icon">⭐</span>
+      <span class="sec-title">Mega-Deals — Corporate M&amp;A</span>
+      <span class="sec-count">3 deals · ~$45B+ total</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q1-mega">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">03/02/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/AES_Corporation_logo.svg/200px-AES_Corporation_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#003087\'>AES</div>'" alt="AES"></div><span class="party-name">AES Corporation</span></div><p class="party-sub">Global power co.; 11.8 GW signed clean energy supply agreements; large US renewables &amp; regulated utility franchise</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer Consortium</span><div class="party-row" style="margin-bottom:.35rem"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/BlackRock_wordmark.svg/200px-BlackRock_wordmark.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#231F20\'>BLK</div>'" alt="BlackRock"></div><span class="party-name buyer" style="font-size:10.5px">GIP (BlackRock)</span></div><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/EQT_AB_logo.svg/200px-EQT_AB_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#E4003A\'>EQT</div>'" alt="EQT"></div><span class="party-name buyer" style="font-size:10.5px">EQT Infrastructure VI</span></div><p class="party-sub">+ CalPERS &amp; Qatar Investment Authority</p></div></td>
+        <td class="val-cell">$10,700 eq.<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">$33,400 TEV</small></td>
+        <td class="cap-cell">Multi-GW<br><small style="font-size:9px;color:var(--muted)">Global fleet</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag take">Take-Private</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Largest clean energy infrastructure take-private of the current cycle. $15/share cash, 40.3% premium to 30-day VWAP. AES needed capital to fund US renewables and data center power demand. CalPERS and QIA co-underwrite. Close pending shareholder vote and multi-jurisdiction regulatory approvals (late '26 / early '27).<div class="sources"><a class="src" href="https://www.esgtoday.com/blackrock-eqt-lead-33-billion-acquisition-of-aes/" target="_blank">ESG Today</a> &nbsp;·&nbsp; <a class="src" href="https://www.bloomberg.com/news/articles/2026-03-02/blackrock-s-gip-and-eqt-to-buy-aes-for-10-7-billion" target="_blank">Bloomberg</a> &nbsp;·&nbsp; Wells Fargo Q1'26 Report &nbsp;·&nbsp; GreenFront Q2'26</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">Closed<br>03/12/26</td>
+        <td><div class="party-cell"><span class="p-label">Target (TPG's stake)</span><div class="party-row"><div class="logo-init" style="background:#1A4F7A">IP</div><span class="party-name">Intersect Power</span></div><p class="party-sub">2.2 GW solar + 2.4 GWh BESS; $15B AUM; co-located data center energy parks, TX &amp; CA</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/200px-Google_2015_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#4285F4\'>G</div>'" alt="Google"></div><span class="party-name buyer">Google / Alphabet</span></div><p class="party-sub">Existing minority holder (prior $800M investment)</p></div></td>
+        <td class="val-cell">$4,750<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">+ debt assumption</small></td>
+        <td class="cap-cell">2,200 MW<br><small style="font-size:9px;color:var(--muted)">+2,400 MWh BESS</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag corp">Corp. Acquisition</span></div><div class="tag-row"><span class="tag btm">BTM</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">First Big Tech outright acquisition of a major renewable energy developer; structural pivot from PPAs to vertical integration. Google acquires Intersect to co-locate solar/BESS with AI data centers, bypassing interconnection queues stretching 7–12 years. Grid-tied business spun off into <strong>IPX Power</strong> (TPG Rise Climate). Sets precedent for Microsoft, Amazon &amp; Meta.<div class="sources"><a class="src" href="https://www.pv-tech.org/google-finalises-intersect-acquisition-to-bring-data-centre-power-in-house/" target="_blank">PV-Tech</a> <a class="src" href="https://abc.xyz/investor/news/news-details/2025/Alphabet-Announces-Agreement-to-Acquire-Intersect-to-Advance-U-S--Energy-Innovation-2025-DVIuVDM9wW/default.aspx" target="_blank">Alphabet IR</a></div></td>
+      </tr>
+
+      <tr>
+        <td class="date-cell">03/25/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/boralex.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#005A8C'>BLX</div>'" alt="Boralex"></div><span class="party-name">Boralex</span></div><p class="party-sub">Public renewables platform; ~3,783 MW installed capacity; ~8,200 MW development pipeline</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer Consortium</span><div class="party-row" style="margin-bottom:.35rem"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Brookfield_Asset_Management_logo.svg/200px-Brookfield_Asset_Management_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1A4A7A'>BAM</div>'" alt="Brookfield"></div><span class="party-name buyer" style="font-size:10.5px">Brookfield Asset Management</span></div><div class="party-row"><div class="logo-init" style="background:#1A3A6A">CDC</div><span class="party-name buyer" style="font-size:10.5px">La Caisse (CDPQ)</span></div></div></td>
+        <td class="val-cell">$2,800 eq.<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">$7,000 EV</small></td>
+        <td class="cap-cell">~3,783 MW<br><small style="font-size:9px;color:var(--muted)">+8,200 MW pipeline</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag take">Take-Private</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Major renewables take-private reinforcing sponsor appetite for scaled platforms. Brookfield/La Caisse are buying growth optionality — acquiring a public renewables company with 8.2 GW of pipeline and moving it into private hands where expansion can be funded away from public market volatility. At $7B EV for ~3.8 GW operating + 8.2 GW pipeline, the deal values the development optionality at a meaningful premium. Strong read-through for sponsor-backed platform consolidation and the trend of taking listed renewables companies private to access long-duration capital.<div class="sources">GreenFront Q2'26 &nbsp;·&nbsp; Wells Fargo Apr '26</div></td>
+      </tr>      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q1 SECTION 3: PARTNERSHIPS / JVs / PROJECT DEV -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q1-partner" onclick="toggle('q1-partner')">
+      <span class="sec-icon">🤝</span>
+      <span class="sec-title">Partnerships, JVs &amp; Project Development</span>
+      <span class="sec-count">4 deals · ~14.5 GW+ capacity</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q1-partner">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Counterparty A</th><th>Counterparty B</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">02/17/26</td>
+        <td><div class="party-cell"><span class="p-label">Sponsor</span><div class="party-row"><div class="logo-init" style="background:#3A5A8A">SBE</div><span class="party-name">SB Energy</span></div><p class="party-sub">SoftBank-backed US renewables developer</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Co-Sponsor</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/US-DeptOfEnergy-Seal.svg/200px-US-DeptOfEnergy-Seal.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#002868\'>DOE</div>'" alt="DOE"></div><span class="party-name buyer">U.S. DOE</span></div></div></td>
+        <td class="val-cell">$33,000<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">est. project value</small></td>
+        <td class="cap-cell">9,200 MW</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Project Dev.</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">SB Energy and DOE announced a 9.2 GW gas-fired generation project — described as the largest in US history per the Wells Fargo newsletter. Reflects the current administration's emphasis on dispatchable generation for AI data center load growth. Gas increasingly positioned as bridge capacity.<div class="sources">Wells Fargo Q1'26 Report</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">02/25/26</td>
+        <td><div class="party-cell"><span class="p-label">Utility Partner</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Xcel_Energy_logo.svg/200px-Xcel_Energy_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#0056B3\'>XEL</div>'" alt="Xcel Energy"></div><span class="party-name">Xcel Energy</span></div><p class="party-sub">Upper Midwest utility; Minnesota clean energy buildout</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Offtaker / Partner</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/200px-Google_2015_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#4285F4\'>G</div>'" alt="Google"></div><span class="party-name buyer">Google</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">1,900 MW<br><small style="font-size:9px;color:var(--muted)">1,400 wind / 200 solar / 300 storage</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag part">Partnership</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Xcel Energy and Google announced a 1.9 GW Minnesota clean energy buildout partnership (1,400 MW wind, 200 MW solar, 300 MW storage). Demonstrates continued role of regulated utilities as clean energy delivery vehicles for hyperscalers alongside direct acquisitions like Intersect.<div class="sources">Wells Fargo Q1'26 Report</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">02/09/26</td>
+        <td><div class="party-cell"><span class="p-label">Storage Provider</span><div class="party-row"><div class="logo-init" style="background:#1A5C8A">EV</div><span class="party-name">Energy Vault</span></div><p class="party-sub">Grid-scale energy storage solutions, NYSE: NRGV</p></div></td>
+        <td><div class="party-cell"><span class="p-label">AI Offtaker</span><div class="party-row"><div class="logo-init" style="background:#5A3A8A">PKE</div><span class="party-name buyer">Peak Energy</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">1,500 MWh</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag jv">JV / Offtake</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Energy Vault and Peak Energy announced a 1.5 GWh AI-dedicated sodium-ion battery storage collaboration. Signals an emerging category of AI-specific storage infrastructure deals as compute demand creates new requirements for high-cycle storage performance.<div class="sources">Wells Fargo Q1'26 Report</div></td>
+      </tr>
+
+      <tr>
+        <td class="date-cell">03/03/26</td>
+        <td><div class="party-cell"><span class="p-label">Seed Asset Contributor</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Brookfield_Asset_Management_logo.svg/200px-Brookfield_Asset_Management_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1A4A7A'>BAM</div>'" alt="Brookfield"></div><span class="party-name">Brookfield-controlled entities</span></div><p class="party-sub">Deriva, Scout, Urban Grid assets — 2.3 GW seed portfolio, contracted operating renewables</p></div></td>
+        <td><div class="party-cell"><span class="p-label">JV Partners</span><div class="party-row" style="margin-bottom:.3rem"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Brookfield_Asset_Management_logo.svg/200px-Brookfield_Asset_Management_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1A4A7A'>BAM</div>'" alt="Brookfield"></div><span class="party-name buyer" style="font-size:10.5px">Brookfield</span></div><div class="party-row" style="margin-bottom:.3rem"><div class="logo-init" style="background:#1A3A6A">BCI</div><span class="party-name buyer" style="font-size:10.5px">BCI (BC Investment Management)</span></div><div class="party-row"><div class="logo-init" style="background:#003087">NBK</div><span class="party-name buyer" style="font-size:10.5px">Norges Bank</span></div></div></td>
+        <td class="val-cell">~$2,600<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">implied TEV</small></td>
+        <td class="cap-cell">2,300 MW<br><small style="font-size:9px;color:var(--muted)">seed portfolio</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag jv">JV / Portfolio Formation</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell"><strong>Northview Energy</strong> launches via JV formation with Brookfield, BCI, and Norges Bank around 2.3 GW of contracted operating renewables (Deriva, Scout, Urban Grid assets). Although structured as a JV formation rather than a classic buyout, this is notable capital formation around contracted operating renewables — Northview launches with scale, long-duration PPAs, and a stated path to ~5 GW. Underscores institutional demand for de-risked operating assets and the continued preference for co-investment vehicles among sovereign and pension capital.<div class="sources">GreenFront Q2'26 &nbsp;·&nbsp; Wells Fargo Apr '26</div></td>
+      </tr>      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q1 SECTION 4: PLATFORM / DEVELOPER -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q1-platform" onclick="toggle('q1-platform')">
+      <span class="sec-icon">🏢</span>
+      <span class="sec-title">Platform / Developer Acquisitions</span>
+      <span class="sec-count">3 deals</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q1-platform">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">02/18/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-init" style="background:#5A3A7A">VS</div><span class="party-name">VoltStorage GmbH</span></div><p class="party-sub">German IP &amp; assets; long-duration energy storage technology</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#2A6A4A">ESS</div><span class="party-name buyer">ESS Tech, Inc.</span></div><p class="party-sub">Iron flow battery technology, NYSE: GWH</p></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">IP / tech assets</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag corp">Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">ESS Tech acquired VoltStorage GmbH's IP and assets to bolster its long-duration storage (LDES) technology portfolio. LDES is attracting M&amp;A activity as grid operators seek 8–100+ hour discharge solutions that lithium-ion cannot economically provide.<div class="sources">Wells Fargo Q1'26 Report</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">03/06/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-init" style="background:#3D7A5C">OZ</div><span class="party-name">Ozone Renewables</span></div><p class="party-sub">Greenfield developer; wind, solar &amp; storage; PJM, MISO, WECC &amp; SPP</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#1B5C3A">EX</div><span class="party-name buyer">Exus Renewables North America</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">Pipeline<br><small style="font-size:9px;color:var(--muted)">Multi-GW dev.</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag corp">Platform Buyout</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Exus Renewables NA acquired Ozone Renewables to build in-house greenfield development capabilities across four ISOs. With PJM wait times now 4–5 years, approved queue positions are primary M&amp;A currency in the sector.<div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/exus-renewables-north-america-acquires-ozone-renewables-5ZSGax" target="_blank">PrivSource</a></div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">1Q '26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-init" style="background:#2E5C8C">HE</div><span class="party-name">Hecate Energy</span></div><p class="party-sub">US developer: utility-scale solar, BESS, wind &amp; thermal; 12+ GW sold historically</p></div></td>
+        <td><div class="party-cell"><span class="p-label">SPAC Acquirer</span><div class="party-row"><div class="logo-init" style="background:#3D5F7A">EGH</div><span class="party-name buyer">EGH Acquisition Corp.</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">12+ GW<br><small style="font-size:9px;color:var(--muted)">hist. sold</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag spac">SPAC Merger</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Hecate Energy merging with EGH Acquisition Corp. to list publicly, targeting capital to scale its pipeline amid surging data center / AI demand. Close pending approvals; expected mid-2026.<div class="sources"><a class="src" href="https://dealroom.net/blog/upcoming-m-a" target="_blank">DealRoom</a></div></td>
+      </tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q1 SECTION 5: SUPPLY CHAIN / TECH / LICENSING -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q1-supply" onclick="toggle('q1-supply')">
+      <span class="sec-icon">⚙️</span>
+      <span class="sec-title">Supply Chain, Technology &amp; Licensing</span>
+      <span class="sec-count">4 deals</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q1-supply">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity / Scope</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">02/24/26</td>
+        <td><div class="party-cell"><span class="p-label">Licensor</span><div class="party-row"><div class="logo-init" style="background:#3A5A2A">OPV</div><span class="party-name">Oxford PV</span></div><p class="party-sub">UK perovskite PV technology; perovskite-silicon tandem cell IP</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Licensee</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/First_Solar_logo.svg/200px-First_Solar_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#003087\'>FSLR</div>'" alt="First Solar"></div><span class="party-name buyer">First Solar</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">Patent license</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag lic">Licensing</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">First Solar entered a perovskite patent licensing agreement with Oxford PV. Perovskite-silicon tandem cells lead next-gen PV with demonstrated efficiencies above 33%. Strategically positions First Solar for OBBBA domestic content advantages as tandem technology approaches commercialization in 2027–2030.<div class="sources">Wells Fargo Q1'26 Report</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">02/25/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-init" style="background:#D4820A">OM</div><span class="party-name">OMCO Solar</span></div><p class="party-sub">US manufacturer of solar trackers &amp; fixed-tilt racking; Arizona</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#2C4A6E">MF</div><span class="party-name buyer">MacLean-Fogg</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">US mfg.</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag mfg">Manufacturing Acq.</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">MacLean-Fogg acquired OMCO Solar. Driven by OBBBA domestic content requirements that tie ITC/PTC credits to US-sourced components — creates direct M&amp;A incentive for industrial manufacturers to control domestic renewable manufacturing capacity.<div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/maclean-fogg-acquires-omco-solar-9zSmyA" target="_blank">PrivSource</a></div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">02/24/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#5A3A7A">GI</div><span class="party-name">Terrasmart / Gibraltar Industries</span></div><p class="party-sub">eBOS division: pre-engineered electrical balance-of-systems; Grand Rapids, MI</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#1B5C3A">GC</div><span class="party-name buyer">GameChange Energy Technologies</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">US mfg. eBOS</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag div">Divestiture</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">GameChange Energy acquired Terrasmart's eBOS (Electrical Balance of Systems) division from Gibraltar Industries, adding a pre-engineered electrical product line and Michigan manufacturing facility. Expands module-to-grid capabilities for utility-scale solar developers.<div class="sources"><a class="src" href="https://www.privsource.com/acquisitions/deal/gamechange-energy-acquires-terrasmart-ebos-division-from-gibraltar-industries-plSrEz" target="_blank">PrivSource</a></div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">02/12/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-init" style="background:#2A6A6A">DE</div><span class="party-name">Doman Energy Group</span></div><p class="party-sub">Engineering firm: utility-scale solar, BESS &amp; EV design &amp; commissioning</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#D4820A">QE</div><span class="party-name buyer">QE Solar LLC</span></div><p class="party-sub">National O&amp;M: solar, BESS, EV charging</p></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">Eng. services</td>
+        <td><div class="tags"><div class="tag-row"><span class="tag vert">Vertical Integration</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">QE Solar acquired Doman Energy Group to vertically integrate engineering capabilities into its O&amp;M platform. Reflects the trend of O&amp;M providers building in-house technical depth (design, commissioning, MV/HV, thermography, QA/QC) as asset portfolios scale.<div class="sources"><a class="src" href="https://www.altenergymag.com/news/2026/02/12/qe-solar-acquires-doman-energy-group-to-expand-in-house-engineering-capabilities/46757/" target="_blank">AltEnergyMag</a></div></td>
+      </tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q1 SECTION 6: NOTABLE EXIT -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q1-exit" onclick="toggle('q1-exit')" style="background:#7A2020">
+      <span class="sec-icon">⚠️</span>
+      <span class="sec-title">Notable Exit — Offshore Wind (Policy-Driven)</span>
+      <span class="sec-count">1 event · ~$1B settlement</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q1-exit">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Exiting Party</th><th>Counterparty</th><th>Settlement ($MM)</th><th>Capacity Retired</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr class="wind-exit">
+        <td class="date-cell">03/23/26</td>
+        <td><div class="party-cell"><span class="p-label">Exiting Party</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Total_SE_logo.svg/200px-Total_SE_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#D40000\'>TE</div>'" alt="TotalEnergies"></div><span class="party-name exit-party">TotalEnergies</span></div><p class="party-sub">Attentive Energy (3 GW, NC/NY) &amp; Carolina Long Bay (1.2 GW) — two active US offshore wind leases relinquished</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Counterparty</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Seal_of_the_United_States_Department_of_the_Interior.svg/200px-Seal_of_the_United_States_Department_of_the_Interior.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#002868\'>DOI</div>'" alt="US DOI"></div><span class="party-name exit-party">U.S. Dept. of Interior</span></div></div></td>
+        <td class="val-cell" style="color:var(--red)">~$1,000</td>
+        <td class="cap-cell" style="color:var(--red)">4,200 MW<br><small style="font-size:9px;color:var(--muted)">offshore retired</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag exit">Lease Exit</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">TotalEnergies relinquished both Attentive Energy (3 GW, NC/NY) and Carolina Long Bay (1.2 GW) offshore wind leases, receiving ~$1B and <strong>exiting US offshore wind entirely.</strong> Attentive Energy was under FAST-41 federal permitting with projected completion by end-2029 prior to settlement. <strong style="color:var(--red)">Key risk signal: regulatory/political framework for US offshore wind has materially deteriorated under current administration.</strong><div class="sources"><a class="src" href="https://www.utilitydive.com/news/trump-administration-plans-buyout-offshore-wind-leases/814944/" target="_blank">Utility Dive</a></div></td>
+      </tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q1 MARKET CONTEXT -->
+  <div class="context">
+    <h3>Q1 2026 — Market Context &amp; Key Themes</h3>
+    <div class="ctx-grid">
+      <div class="ctx-item"><strong>Mega-Deal Cycle Continues</strong>Power &amp; utility deal value hit $142B in 2025 (nearly 2× 2024 per PwC). The AES take-private ($33.4B TEV) is the largest clean energy infrastructure take-private of the current cycle, signaling aggressive private capital deployment into scale generation.</div>
+      <div class="ctx-item"><strong>Hyperscaler Vertical Integration</strong>Google's $4.75B Intersect close, Amazon's $83M Oregon site win, and Google's 1.9 GW Xcel partnership mark a structural shift: Big Tech is acquiring generating assets outright, bypassing interconnection queues stretching 7–12 years.</div>
+      <div class="ctx-item"><strong>Offshore Wind Political Risk Elevated</strong>TotalEnergies' $1B lease relinquishment (4.2 GW, Mar 23) signals the practical shutdown of federal offshore wind support. Infrastructure funds should reassess offshore exposure and permitting timelines.</div>
+      <div class="ctx-item"><strong>OBBBA Reshaping Deal Flow</strong>Tightened ITC/PTC qualification windows are compressing developer timelines and pushing acquirers toward deployment-ready assets with secured interconnection. Greenfield M&amp;A centers on acquiring queue positions.</div>
+      <div class="ctx-item"><strong>Gas Generation Returns as Bridge</strong>SB Energy / DOE 9.2 GW gas-fired project (largest in US history) reflects the administration's emphasis on dispatchable generation for AI-driven load growth. Gas increasingly positioned as near-term bridge fuel.</div>
+      <div class="ctx-item"><strong>Long-Duration Storage Emerging</strong>ESS/VoltStorage and Energy Vault/Peak Energy AI storage deals signal growing LDES M&amp;A activity. AI compute workloads require high-cycle storage distinct from grid-balancing use cases, creating new buyer segments.</div>
+      <div class="ctx-item"><strong>Supply Chain M&amp;A Accelerates</strong>OBBBA domestic content requirements drive industrial manufacturers into renewable supply chain acquisitions. US-manufactured components now directly affect ITC/PTC credit eligibility.</div>
+      <div class="ctx-item"><strong>Scale as Competitive Moat</strong>Per PwC / Utility Dive: "scale will determine winners and losers." Renewable asset valuations stabilized after 2024–25 compression — expected to unlock more seller activity in 2H 2026.</div>
+    </div>
+  </div>
+
+</div><!-- /qblock-q1 -->
+
+
+<!-- ████████████████████████████████████████████████
+     Q2 2026 QUARTER BLOCK
+████████████████████████████████████████████████ -->
+<div class="quarter-block" data-quarter="q2" id="qblock-q2">
+
+  <div class="q-divider">
+    <div class="q-divider-line q2-line"></div>
+    <span class="q-divider-pill q2-pill">Q2 2026 — April 1 to June 30</span>
+    <div class="q-divider-line q2-line-r"></div>
+  </div>
+
+
+  <!-- Q2 MEGA-DEALS -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q2-mega" onclick="toggle('q2-mega')" style="background:#1B3A5C">
+      <span class="sec-icon">⭐</span>
+      <span class="sec-title">Mega-Deals — Corporate M&amp;A</span>
+      <span class="sec-count">1 deal · $67.4B equity</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q2-mega">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">05/18/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/dominionenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#003087'>D</div>'" alt="Dominion Energy"></div><span class="party-name">Dominion Energy</span></div><p class="party-sub">Regulated utility with large generation &amp; transmission footprint across Southeast US; ~27 GW owned generation</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/nexteraenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#009B3A'>NEE</div>'" alt="NextEra Energy"></div><span class="party-name buyer">NextEra Energy</span></div><p class="party-sub">World's largest generator of renewable energy; ~110 GW combined post-merger generation</p></div></td>
+        <td class="val-cell">$67,400 eq.<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">TEV undisclosed</small></td>
+        <td class="cap-cell">~110 GW<br><small style="font-size:9px;color:var(--muted)">combined generation</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag take">Merger / Strategic Combination</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Largest reported power-sector transaction of the quarter and a defining consolidation event for US utility infrastructure. The Dominion + NextEra combination creates the world's largest regulated electric utility platform, driven by the need for greater scale, balance sheet capacity, and infrastructure investment to meet accelerating US power demand — including large-load and data center growth. At $67.4B equity value, this surpasses AES ($33.4B TEV) as the largest announced power-sector deal of the cycle. Signals that utility consolidation is becoming a primary strategic response to structural load growth, with scale allowing more efficient capital deployment across transmission, distribution, and clean energy build-out.<div class="sources">GreenFront Q2'26 &nbsp;·&nbsp; Wells Fargo June '26</div></td>
+      </tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q2 SECTION A: ASSET / M&A TRANSACTIONS -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q2-asset" onclick="toggle('q2-asset')" style="background:#24527F">
+      <span class="sec-icon">🏗️</span>
+      <span class="sec-title">Asset / M&amp;A Transactions</span>
+      <span class="sec-count">19 deals · ~$3.6B+ disclosed</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q2-asset">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">06/03/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Blackstone_logo.svg/200px-Blackstone_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#1A1A1A\'>BX</div>'" alt="Blackstone"></div><span class="party-name">Blackstone / Kindle Energy</span></div><p class="party-sub">Mountain Peak Power (162 MW) &amp; Canyon Peak Power — gas-fired, Colorado; 318 MW combined</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#D4820A">TA</div><span class="party-name buyer">TransAlta</span></div><p class="party-sub">Canadian IPP; expanding US gas generation fleet</p></div></td>
+        <td class="val-cell">$1,000</td>
+        <td class="cap-cell">318 MW<br><small style="font-size:9px;color:var(--muted)">Gas-fired</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">TransAlta acquired Mountain Peak and Canyon Peak Power from Blackstone/Kindle Energy for $1B (~$3.1M/MW). Rising valuations for dispatchable gas peakers as AI data center load growth and renewable intermittency drive demand for firm capacity in western US power markets.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/18/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#3D6B3A">UNK</div><span class="party-name">Undisclosed Seller</span></div><p class="party-sub">270 MW solar portfolio, 3 states; JPMorgan sell-side</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Enel_logo.svg/200px-Enel_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#6B0000\'>ENEL</div>'" alt="Enel"></div><span class="party-name buyer">Enel Group</span></div></div></td>
+        <td class="val-cell">$140</td>
+        <td class="cap-cell">270 MW<br><small style="font-size:9px;color:var(--muted)">Solar PV, 3 states</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Enel Group acquired a 270 MW solar portfolio for $140M (~$519/kW). Follows Q1 2026 acquisition of 830 MW ($1B) — combined Q1+Q2 solar acquisitions total ~1.1 GW for Enel North America in under 6 months. Q2 deal at $519/kW vs. Q1 at $1,205/kW suggests differentiated asset quality or contracted vs. merchant mix.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/19/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#1A3A6A">PSP</div><span class="party-name">PSP Investments (via FirstLight)</span></div><p class="party-sub">FirstLight US hydro portfolio, 3 states; Evercore sell-side</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#2A5A3A">HSE</div><span class="party-name buyer">Hull Street Energy</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">Multi-state<br><small style="font-size:9px;color:var(--muted)">Hydro portfolio</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Hull Street Energy acquired PSP Investments' FirstLight US hydroelectric portfolio (3 states). 4 bidders in Evercore-advised process. Hydroelectric M&amp;A resurging as clean firm capacity gains premium valuations — hydro provides dispatchability and long useful life attractive to infrastructure fund portfolios.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/21/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#3A5A7A">BIM</div><span class="party-name">Bimergen Energy</span></div><p class="party-sub">ERCOT BESS portfolio, Texas</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#2A6A4A">FP</div><span class="party-name buyer">Frontier Power</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">BESS portfolio, TX</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Sale</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Frontier Power selected as preferred proponent to acquire Bimergen Energy's ERCOT BESS portfolio. ERCOT BESS assets attract strong demand given the region's merchant market structure, lack of capacity market, and high price volatility that rewards fast-responding battery storage.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/22/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Ørsted_logo.svg/200px-Ørsted_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#D40000\'>ORS</div>'" alt="Ørsted"></div><span class="party-name">Ørsted</span></div><p class="party-sub">US onshore renewables portfolio; Pre-Launch — formal process expected 3Q26</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD — Pre-Launch</span></div></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Pre-Launch</small></td>
+        <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">Portfolio</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Portfolio Sale</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Ørsted initiated pre-launch for sale of US onshore renewable assets. Formal process expected 3Q 2026. Following offshore wind write-downs in 2023–2024, this would represent a full US market exit by Ørsted, freeing multi-GW of onshore wind/solar capacity. Key watch item for infrastructure fund deployment.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">06/08/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Acciona_logo.svg/200px-Acciona_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#005A8C\'>ACC</div>'" alt="Acciona"></div><span class="party-name">Acciona Energía Canada</span></div><p class="party-sub">Canadian wind portfolio; RBC Capital Markets sell-side</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD — Transaction Launch</span></div></div></td>
+        <td class="val-cell">~$461<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">EUR 400M est.</small></td>
+        <td class="cap-cell">~400 MW<br><small style="font-size:9px;color:var(--muted)">Onshore wind, Canada</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Portfolio Sale</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Acciona Energía tapped RBC to sell its Canadian onshore wind portfolio (~400 MW, EUR 400M / ~$461M). Process formally launched June 8. Potential buyer pool includes Canadian pension funds (CPP, OMERS, PSP), Brookfield, and European infrastructure funds. At ~$1.15M/MW consistent with current Canadian renewables market comps.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">06/01/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller / Developer</span><div class="party-row"><div class="logo-init" style="background:#5A4A2A">SEG</div><span class="party-name">Segue Sustainable Infrastructure</span></div><p class="party-sub">Roosevelt — 2,000 MW solar-plus-storage, New Mexico; indicative bids stage</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">Multiple Bidders — Indicative Stage</span></div></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Indicative bids</small></td>
+        <td class="cap-cell">2,000 MW<br><small style="font-size:9px;color:var(--muted)">Solar+Storage, NM</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Project Sale</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Segue is marketing the Roosevelt 2 GW solar+storage project in New Mexico — one of the largest single project sales currently in market in the US, at indicative bids stage. At 2 GW, Roosevelt would rank among the largest solar projects in the US if completed. Key watch item for infrastructure fund deployment given deal size.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">06/01/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#5A4A2A">CCI</div><span class="party-name">Castleton Commodities International</span></div><p class="party-sub">Hunlock Creek Energy Center — 169 MW gas-fired, Pennsylvania; Lazard sell-side; indicative bids</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Bidder (Indicative)</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Shell_logo.svg/200px-Shell_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#D4B000\'>SHEL</div>'" alt="Shell"></div><span class="party-name buyer">Shell Energy</span></div><p class="party-sub">Also in talks to acquire gas plant near Data Center Alley, VA</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Indicative bids</small></td>
+        <td class="cap-cell">169 MW<br><small style="font-size:9px;color:var(--muted)">Gas-fired, PA</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Sale</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Shell Energy submitted an indicative bid for Hunlock Creek (169 MW gas-fired, PA) via Lazard. Shell is separately in talks to acquire a gas plant near Data Center Alley (Virginia) — underscoring Shell's strategy of acquiring PJM gas assets to supply AI data center power. PJM's tight capacity outlook makes well-positioned gas peakers increasingly strategic.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+
+      <tr>
+        <td class="date-cell">05/27/26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/arclightclean.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#2A2A5A'>ARC</div>'" alt="ArcLight"></div><span class="party-name">ArcLight Capital Partners</span></div><p class="party-sub">Power and infrastructure asset manager; dispatchable &amp; transition generation focus</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/digitalbridge.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1A3A6A'>DBG</div>'" alt="DigitalBridge"></div><span class="party-name buyer">DigitalBridge</span></div><p class="party-sub">Digital infrastructure investor; data centers, towers, fiber</p></div></td>
+        <td class="val-cell">~$1,100</td>
+        <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">Corp. / Mgr. Acq.</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag corp">Corporate Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">DigitalBridge acquired ArcLight Capital Partners for ~$1.1B — an important adjacency deal linking digital infrastructure and power investing. Strategic rationale centers on convergence between electricity infrastructure and data center demand: DigitalBridge gains direct access to power asset management expertise as AI-driven power demand reshapes infrastructure investing. While not a generation asset acquisition, this transaction is highly relevant because it reflects institutional repositioning around the power + digital convergence theme.<div class="sources">Wells Fargo June '26</div></td>
+      </tr>
+      <!-- Morrison Chrysalis / Hanwha Atlas V+VI -->
+      <tr>
+        <td class="date-cell">06/17/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/hanwha.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#E4003A'>HAN</div>'" alt="Hanwha"></div><span class="party-name">Hanwha Renewables</span></div><p class="party-sub">Atlas V (237 MWdc) + Atlas VI (120 MWdc) solar — Atlas Energy Park, La Paz County, AZ; 15-yr PPA with Southern California Edison (CAISO)</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#1A4A7A">CHR</div><span class="party-name buyer">Chrysalis Renewables (Morrison)</span></div><p class="party-sub">Morrison Infrastructure's renewable energy investment platform; first transaction under Chrysalis–Hanwha partnership</p></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">357 MWdc<br><small style="font-size:9px;color:var(--muted)">Solar PV, AZ<br>CAISO / SCE offtake</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Chrysalis Renewables (Morrison Infrastructure) acquired the Atlas V (237 MWdc) and Atlas VI (120 MWdc) solar projects from Hanwha Renewables — the first transaction under a previously announced Chrysalis–Hanwha repeatable M&A framework targeting 3.5+ GW of solar and BESS in North America. Both projects are at the Atlas Energy Park in La Paz County, Arizona, contracted under 15-year busbar PPAs with Southern California Edison (CAISO). Projects feature Qcells domestic modules (Hanwha subsidiary) achieving US domestic content status. Acquisition brings Chrysalis total generation capacity to ~700 MW. Financed through Morrison Infrastructure Partners Master Fund. Torys acted as legal advisor to Morrison.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Revolve / 3 US solar projects -->
+      <tr>
+        <td class="date-cell">06/12/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#5E7491">UNK</div><span class="party-name">Undisclosed Seller</span></div><p class="party-sub">Henry (30 MW, IL), Columbus (56 MW, NM), Endeavor (39 MW, WI) — three development-stage utility-scale solar projects; 125 MW total</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#2A7A4A">REV</div><span class="party-name buyer">Revolve Renewable Power Corp.</span></div><p class="party-sub">North American developer/owner/operator; CSE: REVV</p></div></td>
+        <td class="val-cell">~$0.02/W<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">dev. fee at NTP<br>+10% deferred</small></td>
+        <td class="cap-cell">125 MW<br><small style="font-size:9px;color:var(--muted)">Solar PV, IL/NM/WI</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Asset Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Revolve Renewable Power acquired three development-stage utility-scale solar projects (125 MW combined) in Illinois, New Mexico, and Wisconsin. Sites served by Ameren (IL), Columbus Electric Co-Op (NM), and Wisconsin Power & Light. Notably structured with no upfront payment — Revolve pays a $0.02/W development fee only at notice to proceed with construction, plus 10% deferred consideration tied to realized sale or FMV at NTP. Brings Revolve's US pipeline to 3,000+ MW spanning solar, wind, and BESS across IL, NM, WI, UT, and CO. Definitive agreements signed June 5, 2026.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- ClearPath Energy community solar portfolio sale -->
+      <tr>
+        <td class="date-cell">06/17/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#2A6A4A">CPE</div><span class="party-name">ClearPath Energy</span></div><p class="party-sub">129 MW community solar portfolio — 19 assets (7 operating, 12 in development), New York; "Project Cedar"; JLL sell-side advisor; NBOs due early July</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD — Process Launched</span></div><p class="party-sub">NBOs due early July; exclusivity mid-3Q26; close expected end-3Q26</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Process launched</small></td>
+        <td class="cap-cell">129 MW<br><small style="font-size:9px;color:var(--muted)">Community solar, NY<br>4.5–7.62 MWdc assets</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Portfolio Sale</span></div><div class="tag-row"><span class="tag btm">BTM</span></div></div></td>
+        <td class="cmt-cell">ClearPath Energy launched the sale of a 129 MW community solar portfolio in New York (Project Cedar) via JLL. Portfolio includes 19 assets (7 operating CODs Dec'22–Dec'24, 12 in development targeting 2027–2028 CODs), ranging 4.5–7.62 MWdc each. All development assets have been safe-harbored with a begin construction strategy dated May 2025. Several assets include optional BESS add-on capacity. Revenue stack uses VDER with some assets in NY's Solar for All program. ClearPath has an existing Brookfield Asset Management partnership (2023) for late-stage development and construction pipeline. NBOs due early July; exclusivity target mid-3Q26; expected close end-3Q26.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- CVE North America community solar sale -->
+      <tr>
+        <td class="date-cell">06/18/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#3A6A2A">CVE</div><span class="party-name">CVE North America</span></div><p class="party-sub">~100 MW community solar portfolio — 20 assets (~5 MW avg.), NY &amp; MA; subsidiary of France's CVE Group; Marathon Capital as financial advisor</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD — Pre-Launch</span></div><p class="party-sub">Full sale of NA operation or individual asset sales under evaluation; marketing materials circulated early 2Q26</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Pre-Launch</small></td>
+        <td class="cap-cell">~100 MW<br><small style="font-size:9px;color:var(--muted)">Community solar, NY/MA<br>sub-7 MW assets</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Portfolio Sale</span></div><div class="tag-row"><span class="tag btm">BTM</span></div></div></td>
+        <td class="cmt-cell">NYC-based CVE North America (subsidiary of France's CVE Group) is working with Marathon Capital to monetize its US community solar assets — either through a full sale of its North American operation or individual asset sales. CVE NA owns ~20 operating solar assets in New York and Massachusetts averaging ~5 MW each (~100 MW total). Marketing materials were circulated to prospective buyers in early Q2 2026. CVE NA acquired a 41 MW NY solar portfolio from Saturn Power in Dec 2022. New CEO Michael Belko took over last month. Part of CVE Group's broader portfolio rationalization as it refocuses on its European core markets.<div class="sources">Infralogic (Proprietary)</div></td>
+      </tr>
+      <!-- Engie US DG sale (Project Endor) -->
+      <tr>
+        <td class="date-cell">06/15/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Engie_logo.svg/200px-Engie_logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#00AAFF;color:#000'>ENG</div>'" alt="Engie"></div><span class="party-name">Engie</span></div><p class="party-sub">US distributed generation (DG) business — SoCore Energy assets; commercial &amp; industrial and community solar; "Project Endor"; BofA Securities sell-side advisor</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD — Process Launched</span></div><p class="party-sub">Teasers distributed early Jun '26; formal process underway</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Process launched</small></td>
+        <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">US DG / C&amp;I + community solar</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Portfolio Sale</span></div><div class="tag-row"><span class="tag btm">BTM</span></div></div></td>
+        <td class="cmt-cell">Engie has formally launched the sale of its US distributed generation business (Project Endor), with teasers distributed in early June 2026 via BofA Securities. The portfolio includes assets from SoCore Energy, acquired from Edison International in 2018. SoCore's C&I and community solar portfolio included 150 MW in operation/construction and 170 MW in late-stage development at the time of Engie's acquisition. This follows Engie's February 2025 strategic review announcement to focus on European core markets and place US local energy infrastructure businesses under review. Another major European utility exiting US DG alongside CVE North America and Ørsted US onshore — a notable theme of Q2 2026 deal flow.<div class="sources">Infralogic (Proprietary)</div></td>
+      </tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+
+  <!-- Q2 PLATFORM / DEVELOPER -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q2-platform" onclick="toggle('q2-platform')" style="background:#24527F">
+      <span class="sec-icon">🏢</span>
+      <span class="sec-title">Platform / Developer Acquisitions</span>
+      <span class="sec-count">1 deal</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q2-platform">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Seller / Target</th><th>Buyer / Investor</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">Apr '26</td>
+        <td><div class="party-cell"><span class="p-label">Target</span><div class="party-row"><div class="logo-init" style="background:#2A6A4A">ORD</div><span class="party-name">Oriden</span></div><p class="party-sub">U.S. renewable developer; 5+ GW solar &amp; storage pipeline, primarily MISO/PJM</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/isquaredcapital.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1A4A7A'>ISQ</div>'" alt="I Squared Capital"></div><span class="party-name buyer">I Squared Capital</span></div><p class="party-sub">Global infrastructure fund manager; energy transition and digital infrastructure focus</p></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">5+ GW<br><small style="font-size:9px;color:var(--muted)">Solar &amp; storage pipeline</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag corp">Platform Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">I Squared Capital acquired Oriden, a US renewable developer with 5+ GW of solar and storage pipeline primarily in MISO and PJM. Strong example of investors acquiring development platforms to secure pipeline and then funding the transition into IPP ownership. MISO and PJM exposure is especially valuable given data center demand, interconnection scarcity, and storage growth. Greenfield pipeline positions continue to be a core M&A currency — with PJM interconnection queues stretching 4–5+ years, acquiring a developer's existing queue positions is often faster and cheaper than applying anew.<div class="sources">GreenFront Q2'26</div></td>
+      </tr>
+      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q2 SECTION B: GREENFIELD / PPA AWARDS -->
+  <div class="section-block">
+    <div class="sec-header" id="hdr-q2-gf" onclick="toggle('q2-gf')" style="background:#24527F">
+      <span class="sec-icon">🌱</span>
+      <span class="sec-title">Greenfield Awards, PPAs &amp; Project Development</span>
+      <span class="sec-count">17 deals · 6,200+ MW + $8.3B+ in financings</span>
+      <span class="chevron">▾</span>
+    </div>
+    <div class="sec-body" id="body-q2-gf">
+    <div class="table-wrap"><table>
+      <colgroup><col class="c-date"><col class="c-seller"><col class="c-buyer"><col class="c-val"><col class="c-cap"><col class="c-type"><col class="c-cmt"></colgroup>
+      <thead><tr><th>Date</th><th>Developer / Seller</th><th>Offtaker / Partner</th><th>Value ($MM)</th><th>Capacity</th><th>Deal Type</th><th>Key Takeaways &amp; Comments</th></tr></thead>
+      <tbody>
+      <tr>
+        <td class="date-cell">06/09/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#2A6A4A">ZEL</div><span class="party-name">Zelestra (EQT-backed, fmr. Solarpack)</span></div><p class="party-sub">Palmera 180 MW solar, Texas (ERCOT)</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Offtaker</span><div class="party-row"><div class="logo-box"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Meta_Platforms_Inc._logo.svg/200px-Meta_Platforms_Inc._logo.svg.png" onerror="this.closest('.logo-box').outerHTML='<div class=\'logo-init\' style=\'background:#0866FF\'>META</div>'" alt="Meta"></div><span class="party-name buyer">Meta Platforms</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">180 MW<br><small style="font-size:9px;color:var(--muted)">Solar PV, TX</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag jv">PPA</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">EQT-backed Zelestra signed a PPA with Meta for its 180 MW Palmera solar plant in Texas. Meta joins Google and Amazon as hyperscalers actively competing for dedicated renewable power in ERCOT for AI data center supply. Notably, EQT is simultaneously the acquirer of AES (Q1 2026).<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">06/09/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#2A5A7A">SMG</div><span class="party-name">Scale Microgrid Solutions</span></div><p class="party-sub">SBCC Community Resilience Microgrid, California</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Host / Offtaker</span><div class="party-row"><div class="logo-init" style="background:#5A3A7A">SBCC</div><span class="party-name buyer">Santa Barbara City College</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">N/A<br><small style="font-size:9px;color:var(--muted)">Microgrid, CA</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag gf" style="background:#3A6A2A">Greenfield</span></div><div class="tag-row"><span class="tag btm">BTM</span></div></div></td>
+        <td class="cmt-cell">Scale Microgrid Solutions selected for the SBCC Community Resilience Microgrid in California. Campus microgrids represent the growing BTM resilience market — integrating solar, battery storage, and backup generation behind the meter. Reflects California's push for community-level energy resilience following wildfire-related grid disruptions.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/22/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#3A6A2A">EAR</div><span class="party-name">Earthrise Energy</span></div><p class="party-sub">Pride of the Prairie — 600 MW solar, Illinois</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Offtaker</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">600 MW<br><small style="font-size:9px;color:var(--muted)">Solar PV, IL</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag gf" style="background:#3A6A2A">Greenfield</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Earthrise Energy reached preferred proponent status for the 600 MW Pride of the Prairie solar project in Illinois — one of the largest utility-scale solar projects in MISO. Illinois CEJA mandates 100% clean energy by 2050, creating sustained demand for large-scale solar development.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/26/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#2A7A4A">CWE</div><span class="party-name">Clearway Energy Group</span></div><p class="party-sub">Potentia-Viridi 400 MW BESS, California</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Offtaker</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">400 MW<br><small style="font-size:9px;color:var(--muted)">BESS, CA</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag gf" style="background:#3A6A2A">Greenfield</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Clearway Energy Group reached preferred proponent status for the 400 MW Potentia-Viridi BESS project in California. California has the most active standalone BESS procurement market in the US, driven by the CPUC's Resource Adequacy program and structural evening net load demand. At 400 MW, among the largest standalone BESS projects in the state.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/26/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#D4820A">CLN</div><span class="party-name">Clenera Renewable Energy</span></div><p class="party-sub">Solstice — 250 MW solar, Oklahoma; PPA structure</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Offtaker</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">PPA Offtaker TBD</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">250 MW<br><small style="font-size:9px;color:var(--muted)">Solar PV, OK</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag jv">PPA</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Clenera Renewable Energy reached preferred proponent for the Solstice 250 MW solar project in Oklahoma. Oklahoma's SPP market is increasingly active for solar development. Clenera (a Berkshire Hathaway Energy subsidiary) is deploying capital across Midwest/Southwest solar markets leveraging BHE's balance sheet.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/20/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#3A7A3A">GRE</div><span class="party-name">Grenergy Renovables</span></div><p class="party-sub">Beaver Creek — 229 MW solar+storage, Georgia; PPA</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Offtaker</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">PPA Offtaker TBD</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">229 MW<br><small style="font-size:9px;color:var(--muted)">Solar+Storage, GA</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag jv">PPA</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Spanish developer Grenergy reached preferred proponent for the 229 MW Beaver Creek solar+storage project in Georgia. Georgia has become one of the fastest-growing solar markets in the Southeast driven by large manufacturing/data center load growth and Georgia Power's IRP. Signals continued European developer interest in US solar.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/27/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#0056B3">AVA</div><span class="party-name">Avangrid Renewables</span></div><p class="party-sub">Bluebird — 140 MW solar, Washington state; PPA</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Offtaker</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">PPA Offtaker TBD</span></div></div></td>
+        <td class="val-cell">N/A</td>
+        <td class="cap-cell">140 MW<br><small style="font-size:9px;color:var(--muted)">Solar PV, WA</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag jv">PPA</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Avangrid Renewables (Iberdrola subsidiary) reached preferred proponent for the 140 MW Bluebird solar project in Washington state. Washington is diversifying from hydro-dominated clean energy mix by adding solar. Represents continued Pacific Northwest solar expansion for Iberdrola's US platform.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+      <tr>
+        <td class="date-cell">05/22/26</td>
+        <td><div class="party-cell"><span class="p-label">Grantor</span><div class="party-row"><div class="logo-init" style="background:#2A5A8A">MISO</div><span class="party-name">MISO (Multi-State Transmission)</span></div><p class="party-sub">Sub T Iowa/IL ($940M) + Woodford County IL ($718M) — 4 bidders each; preferred proponent selected</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#5E7491">4BID</div><span class="party-name buyer">4 Bidders (Preferred TBD)</span></div></div></td>
+        <td class="val-cell">$1,658<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">$940M + $718M</small></td>
+        <td class="cap-cell">Multi-state<br><small style="font-size:9px;color:var(--muted)">Transmission, IA/IL</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Project Dev.</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Two major MISO transmission projects totaling $1.66B reached preferred proponent stage with 4 competing bidders each. Critical for enabling renewable energy interconnection in the Midwest where wind/solar development has outpaced grid capacity. Transmission infrastructure deals are increasingly attractive for long-tenor infrastructure capital with contracted essential-service revenue.<div class="sources">InfraDeals Intelligence</div></td>
+      </tr>
+
+      <!-- Cypress Creek Steel River $3.5B financing -->
+      <tr>
+        <td class="date-cell">06/11/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer / Sponsor</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/cypresscreekrenewables.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#2A6A3A'>CCE</div>'" alt="Cypress Creek Energy"></div><span class="party-name">Cypress Creek Energy</span></div><p class="party-sub">Steel River Energy Center — Ph.1+2: 1.63 GW solar + 1.9 GWh BESS, Arkansas; full buildout: 2.45 GW solar + 2.9 GWh BESS by 2029; VPPA with investment-grade corporate offtaker</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Lenders / Tax Equity</span><div class="party-row" style="margin-bottom:.25rem"><div class="logo-init" style="background:#1A3A6A">BCLB</div><span class="party-name buyer" style="font-size:10.5px">Barclays, BNP Paribas, Santander, Wells Fargo</span></div><div class="party-row"><div class="logo-init" style="background:#3A5A2A">TE</div><span class="party-name buyer" style="font-size:10.5px">Major tax equity investor (undisclosed)</span></div></div></td>
+        <td class="val-cell">$3,500<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">C-to-T loan + tax equity + LC</small></td>
+        <td class="cap-cell">1,630 MW<br><small style="font-size:9px;color:var(--muted)">+1,900 MWh BESS<br>Ph.1+2, AR</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Project Financing</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Cypress Creek Energy closed $3.5B in project financing for Phase 1 and Phase 2 of the Steel River Energy Center in Arkansas — one of the largest solar+storage project financings in US history. Financing comprises construction-to-term loans (Barclays, BNP Paribas, Santander, Wells Fargo as CLA), tax equity, and an LC facility. Long-term revenue secured via VPPA with an investment-grade corporate offtaker. Full buildout at 2.45 GW solar + 2.9 GWh BESS by 2029 would make this among the largest solar projects in the US. Notably uses 100% US-made structural steel (from Mississippi County, AR) and First Solar domestic modules — fully qualifying for OBBBA domestic content ITC bonus. Expected to generate ~$300M in lifetime tax revenue for local communities.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Matrix Renewables (TPG) $1.3B portfolio financing -->
+      <tr>
+        <td class="date-cell">06/23/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer / Sponsor</span><div class="party-row"><div class="logo-init" style="background:#1A4A7A">MRX</div><span class="party-name">Matrix Renewables (TPG Rise-backed)</span></div><p class="party-sub">859 MWdc solar + 167 MWh BESS — Tormes Solar (457 MW, TX), Alamo BESS (86.5 MWh, CA), Gaskell West (143 MW+80 MWh, CA), Pleasant Valley Solar (261 MW, ID)</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Lenders / Preferred Equity</span><div class="party-row" style="margin-bottom:.25rem"><div class="logo-init" style="background:#2A4A7A">BNKS</div><span class="party-name buyer" style="font-size:10.5px">MUFG, HSBC, Nomura, Santander (CLA)</span></div><div class="party-row"><div class="logo-init" style="background:#3A5A2A">DESR</div><span class="party-name buyer" style="font-size:10.5px">DESRI — $210M preferred equity (2 construction assets)</span></div></div></td>
+        <td class="val-cell">$1,300+<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">$470M C-to-T / $400M TE bridge / $100M LC / $210M pref. equity</small></td>
+        <td class="cap-cell">859 MWdc<br><small style="font-size:9px;color:var(--muted)">+167 MWh BESS<br>CA / ID / TX</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Project Financing</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Matrix Renewables (TPG Rise Climate-backed) closed $1.3B+ in multi-asset portfolio financing for its US solar and BESS portfolio — transitioning from single-asset to a scalable multi-asset structure combining operating and construction projects. DESRI committed $210M of preferred equity for the two construction assets (Tormes Solar TX, Alamo BESS CA). Tormes Solar (457 MWdc, Navarro County TX) will be Matrix's largest global project upon commissioning (expected 1H 2027). Uses First Solar, Nextpower, and Tesla domestic equipment — achieving US domestic content status. Brings Matrix US portfolio to ~1.5 GW operating/construction/ready-to-build; global platform exceeds 15.5 GW.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Origis Energy $900M corporate facility -->
+      <tr>
+        <td class="date-cell">06/18/26</td>
+        <td><div class="party-cell"><span class="p-label">Borrower</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/origisenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#D4820A'>ORI</div>'" alt="Origis Energy"></div><span class="party-name">Origis Energy</span></div><p class="party-sub">One of America's leading renewable energy platforms; 5+ GW near-term pipeline; 20 GW+ total pipeline; developer-owner-operator of solar &amp; storage</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Lenders (Joint Bookrunners)</span><div class="party-row"><div class="logo-init" style="background:#1A3A6A">SYND</div><span class="party-name buyer" style="font-size:10.5px">First Citizens, ING, Natixis, Santander + EIG (notes) + HSBC, MUFG, Bank Hapoalim, Bank Leumi, TD, Regions &amp; others</span></div></div></td>
+        <td class="val-cell">$900<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">$650M funded + $250M LC facility</small></td>
+        <td class="cap-cell">5+ GW<br><small style="font-size:9px;color:var(--muted)">near-term pipeline advanced</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Corporate Financing</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Origis Energy closed a $900M corporate credit facility ($650M funded + $250M LC) to accelerate its near-term project pipeline — the first corporate-level financing at this scale for Origis, signaling its transition from developer to scaled developer-owner-operator. EIG structured and acted as sole purchaser of notes alongside a 13-bank commercial syndicate. Proceeds targeted at 5+ GW of highly advanced pipeline within its 20 GW+ total portfolio. Origis reported quadrupling its operating capacity over the prior 24 months. Reflects deepening institutional debt capital appetite for scaled renewable platforms with demonstrated execution track records.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Catalyst Power / CT Green Bank distributed solar financing -->
+      <tr>
+        <td class="date-cell">06/16/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#3A5A2A">CAT</div><span class="party-name">Catalyst Power</span></div><p class="party-sub">Five-site distributed solar portfolio — 1,025 kW-DC, Hartford &amp; Trumbull, CT; C&amp;I commercial rooftop; DRW Holdings &amp; BP Energy Partners-backed</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Finance Partner</span><div class="party-row"><div class="logo-init" style="background:#1B5C3A">CTGB</div><span class="party-name buyer">Connecticut Green Bank</span></div><p class="party-sub">Nation's first state-level green bank; mobilized $3B+ into CT green economy to date</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Financing terms undisclosed</small></td>
+        <td class="cap-cell">1.025 MW<br><small style="font-size:9px;color:var(--muted)">Distributed solar, CT<br>sub-200 kW rooftop</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Project Financing</span></div><div class="tag-row"><span class="tag btm">BTM</span></div></div></td>
+        <td class="cmt-cell">Catalyst Power (DRW Holdings / BP Energy Partners-backed) and Connecticut Green Bank closed financing for a five-site, 1,025 kW distributed solar portfolio in Hartford and Trumbull, CT. Sub-200 kW C&I rooftop projects in a segment that faces elevated fixed transaction costs — engineering reviews, underwriting, project structuring — that make traditional financing difficult. Expected to avoid 500+ metric tons of CO2e annually. Reflects the continued role of state green banks in bridging the economics of sub-MW commercial solar projects where private capital alone faces structural challenges. Catalyst operates across 11 states and 33 utility territories serving 8,500+ customers.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Apex Clean Energy / Great Bay Royalties $73M Coles Wind -->
+      <tr>
+        <td class="date-cell">06/16/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer / Royalty Issuer</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/apexcleanenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1A5C3A'>APX</div>'" alt="Apex Clean Energy"></div><span class="party-name">Apex Clean Energy</span></div><p class="party-sub">Coles Wind — 311 MW, Coles County, Illinois; construction began Jan 2026; 20-yr PPA; MISO; COD expected 2H 2027</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Royalty Investor</span><div class="party-row"><div class="logo-init" style="background:#2A4A2A">GBR</div><span class="party-name buyer">Great Bay Royalties / Altius</span></div><p class="party-sub">JV: Altius Renewable Royalties (ARR) + Apollo Global Management; GBR's largest single asset royalty to date</p></div></td>
+        <td class="val-cell">$73<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Royalty investment</small></td>
+        <td class="cap-cell">311 MW<br><small style="font-size:9px;color:var(--muted)">Onshore wind, IL<br>MISO; 20-yr PPA</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag jv">Royalty Investment</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Great Bay Royalties (JV of Altius Renewable Royalties and Apollo Global Management) closed a $73M royalty investment in Apex Clean Energy's 311 MW Coles Wind project in Illinois — GBR's largest single-asset royalty to date. Royalty rates are tiered (higher initial 10-year rates stepping down to a lower perpetual tail rate) to meet base returns while minimizing disincentives for future life extension investment. The project is anchored by a strong 20-year PPA and construction is underway (Jan 2026 start, 2H 2027 COD expected). Reflects the growing royalty-based financing model in US renewables as an alternative to traditional debt/equity structures.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Elementl Power nuclear SMR Ohio -->
+      <tr>
+        <td class="date-cell">06/23/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer</span><div class="party-row"><div class="logo-init" style="background:#1A3A6A">ELP</div><span class="party-name">Elementl Power</span></div><p class="party-sub">Up to 1.5 GW SMR nuclear — Meigs County, Ohio; GE Vernova Hitachi BWRX-300 SMRs; site acquired from American Municipal Power; PJM interconnection application filed</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Technology Partner</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/gevernova.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1961AE'>GEV</div>'" alt="GE Vernova"></div><span class="party-name buyer">GE Vernova Hitachi Nuclear Energy</span></div><p class="party-sub">BWRX-300 SMR technology provider; Early Works Agreement signed</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Construction 2030; FID pending</small></td>
+        <td class="cap-cell">Up to 1,500 MW<br><small style="font-size:9px;color:var(--muted)">SMR nuclear, OH<br>600 MW Phase 1</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Project Dev. (Nuclear SMR)</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Elementl Power announced development of an up-to-1.5 GW nuclear power plant in Meigs County, Ohio using GE Vernova Hitachi's BWRX-300 small modular reactors — among the first new SMR projects in the US. 700-acre site along the Ohio River acquired from American Municipal Power (AMP). PJM interconnection application filed for first 600 MW. Construction start targeted for 2030 subject to NRC and Ohio Power Siting Board approvals (FID and regulatory approvals pending). Fully privately financed — not funded through electric customer rates. COD target 2034 for first unit. Thousands of construction jobs expected. Significant signal of nuclear's re-emergence as investable clean firm capacity alongside AI-driven load growth that has renewed interest in always-on generation.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Enlight/Clenera CO Bar $2.6B Arizona financing -->
+      <tr>
+        <td class="date-cell">06/26/26</td>
+        <td><div class="party-cell"><span class="p-label">Developer / Sponsor</span><div class="party-row"><div class="logo-box"><img src="https://logo.clearbit.com/enlightenergy.com" onerror="this.closest('.logo-box').outerHTML='<div class='logo-init' style='background:#1B5C3A'>ENLT</div>'" alt="Enlight Renewable Energy"></div><span class="party-name">Enlight / Clēnera Holdings</span></div><p class="party-sub">CO Bar Complex — 5 projects, ~1.2 GW solar + 4.0 GWh BESS, Arizona; 1 GW AC interconnection; Connect &amp; Expand strategy</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Lenders (7-Bank Consortium)</span><div class="party-row"><div class="logo-init" style="background:#1A3A6A">SYND</div><span class="party-name buyer" style="font-size:10.5px">BNP Paribas, Crédit Agricole, MUFG, Natixis, Nord/LB, Société Générale, Wells Fargo</span></div></div></td>
+        <td class="val-cell">$2,600<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">$1,705M term debt + ~$1,488M tax equity</small></td>
+        <td class="cap-cell">1,200 MW<br><small style="font-size:9px;color:var(--muted)">+4,000 MWh BESS<br>AZ — 5 projects</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag dev">Project Financing</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Enlight Renewable Energy's US subsidiary Clēnera closed $2.6B in debt financing for the CO Bar Complex in Arizona — Clēnera's largest financing in company history. The 5-project, ~1.2 GW solar + 4.0 GWh BESS complex is anchored by a single 1 GW AC interconnection, exemplifying Enlight's "Connect and Expand" strategy of clustering multiple projects on one large grid connection. Total complex investment of $2.9–3.05B includes $1.705B term debt and $1.45–1.525B estimated tax equity. Fully subscribed via 20-year busbar PPAs with Salt River Project and Arizona Public Service. Expected to generate $250–260M revenue / $205–210M EBITDA in its first full year. COD phased 2H 2027–1H 2028. Projects eligible for the 10% Energy Community bonus tax credit; CO Bar 4–5 also targeting the 10% Domestic Content bonus. Enough capacity to power ~220,000 Arizona homes.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- DSD Renewables sale process -->
+      <tr>
+        <td class="date-cell">06/26/26</td>
+        <td><div class="party-cell"><span class="p-label">Seller</span><div class="party-row"><div class="logo-init" style="background:#5A3A7A">DSD</div><span class="party-name">DSD Renewables</span></div><p class="party-sub">National distributed generation solar platform; majority-owned by Ares Management (since May 2025); 1.1+ GW deployed historically; distressed sale process; Evercore sell-side advisor</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Process Status</span><div class="party-row"><div class="logo-init" style="background:#5E7491">TBD</div><span class="party-name buyer">TBD — First-Round Bids Due Jun '26</span></div><p class="party-sub">Options under evaluation: full company sale or sale of operating assets; HPS Investment Partners (creditor) playing prominent role</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Distressed sale process</small></td>
+        <td class="cap-cell">1.1+ GW<br><small style="font-size:9px;color:var(--muted)">deployed historically<br>National DG portfolio</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Portfolio / Company Sale</span></div><div class="tag-row"><span class="tag btm">BTM</span></div></div></td>
+        <td class="cmt-cell">DSD Renewables' owners collected first-round bids in late June 2026 in the latest attempt to sell the national distributed generation platform — described by multiple sources as a distressed sale. Evercore (sell-side advisor on a prior 2025 DG asset sale attempt) is again advising. Ares Management took a majority stake in May 2025 after a 2022 $200M preferred equity investment; BlackRock previously owned DSD before transferring creditor exposure to HPS Investment Partners (acquired by BlackRock in 2025), which is now taking a prominent role in the process. Prior full-sale talks with CVC-DIF-backed GS Power Partners in late 2025/early 2026 did not result in a deal. Company has seen leadership turnover — former CEO Erik Schiemann departed in March 2026; new CFO Sarah Wells (ex-PosiGen, ex-Spruce Power restructuring experience) joined early 2026, suggesting a turnaround-oriented mandate. DSD previously closed a $238M DG portfolio financing (188 projects, 223 MW, Jul 2025) and a $140M Morgan Stanley tax equity investment (Mar 2025). Originally formed as GE Solar in 2012; BlackRock acquired full ownership by 2020; Cox Enterprises made a $250M strategic investment in 2023.<div class="sources">Infralogic</div></td>
+      </tr>
+      <!-- Agilitas Energy Northeast portfolio acquisition -->
+      <tr>
+        <td class="date-cell">06/25/26</td>
+        <td><div class="party-cell"><span class="p-label">Sellers</span><div class="party-row"><div class="logo-init" style="background:#5E7491">2 CO</div><span class="party-name">Two Renewables Companies (Undisclosed)</span></div><p class="party-sub">Development-stage solar &amp; BESS portfolio, Northeast US (Maine to New York); projects ≥10 MW each; abandoned amid OBBBA tax credit deadline pressure</p></div></td>
+        <td><div class="party-cell"><span class="p-label">Buyer</span><div class="party-row"><div class="logo-init" style="background:#2A6A4A">AGL</div><span class="party-name buyer">Agilitas Energy</span></div><p class="party-sub">Wakefield, MA-based developer; in-house ECP; self-financed via cash flow</p></div></td>
+        <td class="val-cell">N/A<br><small style="font-family:inherit;font-size:9px;color:var(--muted)">Dev. cost assumption (no cash purchase price)</small></td>
+        <td class="cap-cell">10+ MW each<br><small style="font-size:9px;color:var(--muted)">Solar + BESS, ME–NY</small></td>
+        <td><div class="tags"><div class="tag-row"><span class="tag asset">Portfolio Acquisition</span></div><div class="tag-row"><span class="tag gc">GC</span></div></div></td>
+        <td class="cmt-cell">Agilitas Energy agreed to acquire a portfolio of development-stage solar and BESS projects from two Northeast renewables companies in exchange for covering development costs — a distressed-developer consolidation play. CEO Barrett Bilotta cited rising development/interconnection costs, longer wait times, and OBBBA's tax credit phase-out (projects must reach COD by 2027 to qualify) as flooding the market with abandoned development-stage assets that Agilitas can acquire cost-effectively. Targets ≥10 MW projects from Maine to New York; some projects may qualify for COD extensions if a future tax credit extension is enacted (CEO flagged potential for a 2-3 year extension at end of 2026). Agilitas also expects to close acquisition of operating/under-construction assets from a consortium of New England banks "in the coming weeks," and projects ~$150M in operating-project acquisitions for 2026 (potentially doubling). Company is separately running its own sale process via Nomura Greentech (mandated Aug 2025, ongoing). Brings Agilitas to 14 solar/solar+BESS hybrid projects under construction across New England/NY, all in-house ECP.<div class="sources">Infralogic</div></td>
+      </tr>      </tbody>
+    </table></div>
+    </div>
+  </div>
+
+  <!-- Q2 MARKET CONTEXT -->
+  <div class="context q2ctx">
+    <h3>Q2 2026 (Through June 30) — Emerging Themes</h3>
+    <div class="ctx-grid">
+      <div class="ctx-item"><strong>Gas Dispatchability Commanding Premium</strong>TransAlta's $1B acquisition of Mountain Peak/Canyon Peak (~$3.1M/MW) and Shell's pursuit of PJM gas assets near Data Center Alley signal structural re-rating of dispatchable gas capacity. AI-driven load growth and coal retirements are tightening capacity margins, giving firm peakers new strategic value not seen since the early 2000s.</div>
+      <div class="ctx-item"><strong>Enel's US Solar Roll-Up Accelerates</strong>Enel acquired ~1.1 GW of US solar in Q1+Q2 2026 ($1.14B combined), demonstrating the most aggressive US solar buy-side strategy among major European utilities. Q2 deal pricing at $519/kW vs. Q1 at $1,205/kW suggests portfolio differentiation — potential for further consolidation in 2H 2026.</div>
+      <div class="ctx-item"><strong>Hyperscaler PPA Activity Intensifies</strong>Meta/Zelestra 180 MW Texas PPA (Jun 9) joins Google's Xcel 1.9 GW Minnesota partnership as Q2 hyperscaler offtake deals. Big Tech now procuring directly across ERCOT, MISO, and WECC simultaneously — creating a persistent bid for renewable capacity across all major US power markets.</div>
+      <div class="ctx-item"><strong>Large-Scale Pipeline in Play</strong>Segue's Roosevelt 2 GW solar+storage (NM) is the largest single project sale currently in market. Combined with Acciona's ~400 MW Canada wind process and Ørsted's upcoming US onshore sale (3Q26 formal process), Q3 2026 is shaping up as a significant transaction period for infrastructure fund deployment.</div>
+      <div class="ctx-item"><strong>Transmission as Infrastructure Asset Class</strong>Two MISO transmission projects totaling $1.66B (Iowa/Illinois Sub T + Woodford County) reached preferred proponent stage. As renewable curtailment rises and interconnection queues balloon, transmission is emerging as a standalone attractive asset class with long-term contracted revenue and essential-service characteristics.</div>
+      <div class="ctx-item"><strong>Ørsted Exit Watch — US Onshore Portfolio</strong>Ørsted's pre-launch of its US onshore renewable portfolio sale (formal process 3Q26) would be a major market event. Combined with its offshore wind exits, Ørsted's full US retreat signals the challenges facing European developers in current US policy environment, potentially releasing multi-GW for US and Canadian infrastructure fund acquisition.</div>
+      <div class="ctx-item"><strong>European Utility DG Exit Wave</strong>Three European utilities have launched or are exploring US DG/distributed solar asset sales in Q2 2026: Engie (Project Endor — full US DG business), CVE North America (~100 MW community solar, NY/MA), and Ørsted US onshore (pre-launch). Convergence with strategic portfolio rationalization by European players suggests a sustained supply of quality operating distributed and onshore renewable portfolios entering market in 2H 2026.</div>
+      <div class="ctx-item"><strong>Project Financing at Scale</strong>Cypress Creek's $3.5B Steel River financing (1.63 GW+) and Matrix Renewables' $1.3B+ multi-asset structure demonstrate continued deep capital markets appetite for large-scale renewable project financings. Origis Energy's $900M corporate facility signals the maturation of developer-owner-operators accessing corporate credit alongside project-level financing, a structural evolution from the traditional single-project financing model.</div>
+      <div class="ctx-item"><strong>Nuclear SMR Re-Emerges as Investable Asset</strong>Elementl Power's 1.5 GW BWRX-300 SMR project announcement in Ohio (Jun 23) is among the first new US SMR developments, privately financed and targeting 2030 construction start. AI-driven load growth has materially improved the economics case for always-on clean firm capacity. Watch for additional SMR project announcements and potential infrastructure fund interest in nuclear development equity as the asset class matures.</div>
+    </div>
+  </div>
+
+</div><!-- /qblock-q2 -->
+
+
+<!-- FOOTER -->
+<footer>
+  <strong>Sources:</strong> &nbsp;
+  <strong style="color:var(--navy)">InfraDeals Intelligence</strong> &nbsp;·&nbsp;
+  <strong style="color:var(--navy)">Infralogic</strong> &nbsp;·&nbsp;
+  <strong style="color:var(--orange)">Wells Fargo March 2026 Renewable Energy Report</strong> &nbsp;·&nbsp;
+  <a href="https://www.utilitydive.com" target="_blank">Utility Dive</a> &nbsp;·&nbsp;
+  <a href="https://www.latitudemedia.com" target="_blank">Latitude Media</a> &nbsp;·&nbsp;
+  <a href="https://pv-magazine-usa.com" target="_blank">PV Magazine USA</a> &nbsp;·&nbsp;
+  <a href="https://www.esgtoday.com" target="_blank">ESG Today</a> &nbsp;·&nbsp;
+  <a href="https://www.pv-tech.org" target="_blank">PV-Tech</a> &nbsp;·&nbsp;
+  <a href="https://www.privsource.com" target="_blank">PrivSource</a> &nbsp;·&nbsp;
+  <a href="https://www.pwc.com/us/en/industries/energy-utilities-resources/library/power-utilities-deals-outlook.html" target="_blank">PwC 2026 Outlook</a> &nbsp;·&nbsp;
+  <a href="https://www.fticonsulting.com/insights/articles/power-renewables-energy-transition-2025-ma-year-review-2026-outlook" target="_blank">FTI Consulting M&amp;A Review</a> &nbsp;·&nbsp;
+  <a href="https://www.bloomberg.com" target="_blank">Bloomberg</a> &nbsp;·&nbsp;
+  <a href="https://kpmg.com/us/en/articles/mergers-acquisitions-trends-energy-natural-resources-chemicals.html" target="_blank">KPMG Energy M&amp;A Trends</a>
+  <br><br>
+  <em>Deal values shown where publicly disclosed. N/A indicates undisclosed or not applicable. Q2 2026 data through June 10, 2026. Information compiled from public sources and proprietary research for internal use only. Not investment advice.</em>
+</footer>
+
+<script>
+// ── Auto-set compiled date ──
+document.getElementById('compiled-date').textContent =
+  new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+// ── KPI data per quarter ──
+const KPI = {
+  all: { deals:'57', val:'~$123B+', mega:'6', tech:'4', gw:'21+', q1:'21', q2:'36', q1lbl:'Q1 2026 Deals', q2lbl:'Q2 2026 Deals (thru Jun 30)' },
+  q1:  { deals:'21', val:'~$51B+', mega:'4', tech:'4', gw:'13+', q1:'8', q2:'4', q1lbl:'Asset / M&A Deals', q2lbl:'Platform & Partnership Deals' },
+  q2:  { deals:'36', val:'~$75B+', mega:'2', tech:'1', gw:'6,200+ MW', q1:'14', q2:'22', q1lbl:'M&A / Asset / Portfolio Deals', q2lbl:'Greenfield / Financing / PPA' }
+};
+
+const COVERAGE = {
+  all: 'January 1 – June 30, 2026',
+  q1:  'January 1 – March 30, 2026',
+  q2:  'April 1 – June 30, 2026'
+};
+
+const TITLE = {
+  all: '2026',
+  q1:  'Q1 2026',
+  q2:  'Q2 2026'
+};
+
+function setFilter(q) {
+  // Update buttons
+  document.querySelectorAll('.qbtn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + q).classList.add('active');
+
+  // Show/hide quarter blocks
+  document.querySelectorAll('.quarter-block').forEach(block => {
+    const bq = block.dataset.quarter;
+    if (q === 'all' || q === bq) block.classList.remove('hidden');
+    else block.classList.add('hidden');
+  });
+
+  // Update KPIs
+  const k = KPI[q];
+  document.getElementById('kpi-deals').textContent = k.deals;
+  document.getElementById('kpi-val').textContent   = k.val;
+  document.getElementById('kpi-mega').textContent  = k.mega;
+  document.getElementById('kpi-tech').textContent  = k.tech;
+  document.getElementById('kpi-gw').textContent    = k.gw;
+  document.getElementById('kpi-q1').textContent    = k.q1;
+  document.getElementById('kpi-q2').textContent    = k.q2;
+  document.getElementById('kpi-q1').closest('.kpi').querySelector('.kpi-label').textContent = k.q1lbl;
+  document.getElementById('kpi-q2').closest('.kpi').querySelector('.kpi-label').textContent = k.q2lbl;
+
+  // Update coverage text and title
+  document.getElementById('coverage-text').textContent = COVERAGE[q];
+  document.getElementById('main-title').innerHTML =
+    TITLE[q] + ' &nbsp;<em>Renewable Energy &amp; Sustainable Infrastructure</em>&nbsp; M&amp;A Activity Tracker — United States';
+}
+
+// ── Section toggle ──
+const ALL_SECS = ['q1-asset','q1-mega','q1-partner','q1-platform','q1-supply','q1-exit','q2-mega','q2-asset','q2-platform','q2-gf'];
+
+function toggle(id) {
+  const body = document.getElementById('body-' + id);
+  const hdr  = document.getElementById('hdr-' + id);
+  if (!body || !hdr) return;
+  const open = !body.classList.contains('collapsed');
+  body.classList.toggle('collapsed', open);
+  hdr.classList.toggle('collapsed', open);
+  hdr.querySelector('.chevron').textContent = open ? '▸' : '▾';
+}
+
+function expandAll() {
+  ALL_SECS.forEach(id => {
+    const body = document.getElementById('body-' + id);
+    const hdr  = document.getElementById('hdr-' + id);
+    if (!body || !hdr) return;
+    body.classList.remove('collapsed');
+    hdr.classList.remove('collapsed');
+    hdr.querySelector('.chevron').textContent = '▾';
+  });
+}
+
+function collapseAll() {
+  ALL_SECS.forEach(id => {
+    const body = document.getElementById('body-' + id);
+    const hdr  = document.getElementById('hdr-' + id);
+    if (!body || !hdr) return;
+    body.classList.add('collapsed');
+    hdr.classList.add('collapsed');
+    hdr.querySelector('.chevron').textContent = '▸';
+  });
+}
+</script>
+</body>
+</html>
